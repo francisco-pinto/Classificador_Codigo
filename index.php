@@ -8,7 +8,7 @@
     }else 
     {
         header("Location: login.php");
-        die();
+        die(); //pega
     }
 ?>
             
