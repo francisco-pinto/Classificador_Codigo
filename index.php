@@ -15,7 +15,7 @@
 <html lang = "en">
    
    <head>
-      <title>Login Form</title>
+      <title>Login</title>
       
       <style>
          body {
@@ -78,7 +78,7 @@
 	
    <body>
       
-      <h2>Index</h2>  
+      <h2>Página Index</h2>  
       
       <?php
         if(array_key_exists('button_logout', $_POST)) {
