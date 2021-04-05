@@ -2,28 +2,20 @@
    ob_start();
    session_start();
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) {
+    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
+    {
         echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
-    }else {
-        header("Location: teste.php");
+    }else 
+    {
+        header("Location: login.php");
         die();
     }
-
-    session_destroy();
 ?>
-
-<?
-   // error_reporting(E_ALL);
-   // ini_set("display_errors", 1);
-?>
-
-         
-   
+            
 <html lang = "en">
    
    <head>
       <title>Login Form</title>
-      <!--<link href = "css/bootstrap.min.css" rel = "stylesheet">-->
       
       <style>
          body {
@@ -88,5 +80,21 @@
       
       <h2>Index</h2>  
       
+      <?php
+        if(array_key_exists('button_logout', $_POST)) {
+            button1();
+        }
+        function button1() {
+            session_destroy();
+            header("Location: login.php");
+            die();
+        }
+    ?>
+
+      <form method="post">
+        <input type="submit" name="button_logout"
+                class="button" value="Logout" />
+    </form>
+         
    </body>
 </html>

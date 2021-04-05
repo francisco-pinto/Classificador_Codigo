@@ -15,20 +15,17 @@
 
    ob_start();
    session_start();
+
+   if(isset($_SESSION['user_Id'])){
+      header('location: index.php');
+   }
 ?>
 
-<?
-   // error_reporting(E_ALL);
-   // ini_set("display_errors", 1);
-?> 
-      
-   
 
 <html lang = "en">
    
    <head>
       <title>Login Form</title>
-      <!--<link href = "css/bootstrap.min.css" rel = "stylesheet">-->
       
       <style>
          body {
@@ -134,10 +131,9 @@
             }
          ?>
 
-      </div> <!-- /container -->
+      </div>
       
       <div class = "container">
-      
          <form class = "form-signin" role = "form" 
             action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); 
             ?>" method = "post">
@@ -150,9 +146,6 @@
             <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
                name = "login">Login</button>
          </form>
-			
-         Click here to  <a href = "logout.php" tite = "Logout">Logout.
-         
       </div> 
       
    </body>
