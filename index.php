@@ -15,7 +15,7 @@
 <html lang = "en">
    
    <head>
-      <title>Login</title>
+      <title>Index</title>
       
       <style>
          body {
