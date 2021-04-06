@@ -13,10 +13,22 @@
         echo "Connection failed: " . $e->getMessage();
     }
 
+
    ob_start();
+
    session_start();
 
-   if(isset($_SESSION['user_Id'])){
+   // Tempo de sessão
+   $now = time();
+   if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
+      session_unset();
+      session_destroy();
+      session_start();
+   }
+   $_SESSION['discard_after'] = $now + 3600;
+
+   if(isset($_SESSION['user_Id']))
+   {
       header('location: index.php');
    }
 ?>
@@ -25,13 +37,8 @@
 <html lang = "en">
    
    <head>
-      <title>Login ->  First Github Commit Test</title>
-      <h1>Teste </h1>
-      <h2>Teste 2</h2>
-      <h3>Teste 3</h3>
-      <h4>Teste 4</h4>
+      <title>Login</title>
 
-      
       <style>
          body {
             padding-top: 40px;
