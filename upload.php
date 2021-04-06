@@ -24,13 +24,15 @@
 
             <?php
                 $file=$_FILES["fileToUpload"]["name"];
-                $allowedTypes = array('application/zip', 'application/x-rar-compressed');
+
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
                 
                 $alert = "Inicio do upload";
                 
                 if ($_FILES["fileToUpload"]["type"]!="")
                 {
-                    if (in_array($_FILES["fileToUpload"]["type"], $allowedTypes))
+                    if ($ext = 'rar' || $ext = 'zip')
                     {
                         if ($_FILES["fileToUpload"]["error"] > 0)
                         {
@@ -39,17 +41,13 @@
                         else
                         {
                             try{
-                                if (file_exists("../Uploads/" . $_FILES["fileToUpload"]["name"]))
+                                if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
                                 {
                                     $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";
                                 }
                                 else
                                 {
-                                    //I renamed the file into FILENAME
-                                    $newfilename = 'FILENAME.'.pathinfo($file, PATHINFO_EXTENSION);
-                                    //file permission
-                                    mkdir($newfilename , 0777, true);
-                                    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "../Uploads/".$newfilename);
+                                    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$file);
                                     $alert = "Upload with sucess";    
                                 }
                             }           
