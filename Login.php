@@ -23,14 +23,13 @@
    if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
       session_unset();
       session_destroy();
-      $_SESSION = array();
       session_start();
    }
    $_SESSION['discard_after'] = $now + 3600;
 
    if(isset($_SESSION['user_Id']))
    {
-      header('Location: index.php');
+      header('location: index.php');
    }
 ?>
 
@@ -124,7 +123,7 @@
                     $row   = $stmt->fetch(PDO::FETCH_ASSOC);
                     
                     if($count == 1 && !empty($row)) {
-         
+                    /******************** Your code ***********************/
                         $_SESSION['user_Id']   = $row['Id'];
                         $_SESSION['user_Username'] = $row['Username'];
                         $_SESSION['user_Name'] = $row['Nome'];
