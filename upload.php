@@ -101,12 +101,13 @@ if(isset($_POST['submit'])){
                     die();
                 }
                 else
-                {
-                    if($_FILES["fileToUpload"]["error"] < 20000){
+                {   //Limitar o tamanho do upload (20 mb atualmente)
+                    if($_FILES["fileToUpload"]["size"] < 20971520){
                         try{
                             if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
                             {
                                 $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";
+                                
                             }
                             else
                             {
@@ -141,7 +142,7 @@ if(isset($_POST['submit'])){
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
               
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID, NotaID) VALUES ('$file', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id', '1');";
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID) VALUES ('$file', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id');";
 
             // use exec() because no results are returned
             $db->exec($sql);
