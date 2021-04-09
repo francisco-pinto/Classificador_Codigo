@@ -10,6 +10,21 @@
         header("Location: login.php");
         die(); //pega
     }
+
+
+    /*Ligação da Base de Dados*/
+    $servername = "localhost";
+    $username = "root";         //Default credencials wamp
+    $password = "";
+
+    try {
+        $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
+        // set the PDO error mode to exception
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "Connected successfully";
+    } catch(PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -17,19 +32,24 @@
     <body>
 
         <form action="" method="post" enctype="multipart/form-data">
+            <label for="Linguagens">Escolher a linguagem:</label><br>
+            <?php
+                $sql = "SELECT * FROM Linguagem";
 
+                $q = $db->prepare($sql);
+                $q->execute(['%son']);
+                $q->setFetchMode(PDO::FETCH_ASSOC);
 
-            <!-- Adicionar lingaugens com base de Dados -->
-            Escolher a linguagem:
-            <input type="radio" id="c" name="language" value="c">
-            <label for="c">C</label><br>
-            <input type="radio" id="c++" name="language" value="c++">
-            <label for="c++">C++</label><br>
-            <input type="radio" id="c#" name="language" value="c#">
-            <label for="c#">C#</label>
+                while ($linguagens = $q->fetch()) {
+                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="language" value="' . $linguagens['Linguagem'] . '">';
+                    echo '<label for="' . $linguagens['Linguagem'] . '">' . $linguagens['Linguagem'] . '</label><br>';
+                }
+            ?>
             <br>
             <br>
-            <br>                        
+            <br>
+            <br>     
+
 
             Submeter um ficheiro:
             <input type="file" name="fileToUpload" id="fileToUpload">
@@ -57,6 +77,7 @@ if(isset($_POST['submit'])){
 
 
         /*Upload do ficheiro*/
+        $user_id =  $_SESSION['user_Id'];  
         $language = $_POST['language'];
         $file=$_FILES["fileToUpload"]["name"];
         $fileSize=$_FILES["fileToUpload"]["size"];
@@ -77,28 +98,35 @@ if(isset($_POST['submit'])){
                 if ($_FILES["fileToUpload"]["error"] > 0)
                 {
                     echo "Return Code: " . $_FILES["fileToUpload"]["error"];
+                    die();
                 }
                 else
                 {
-                    try{
-                        if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
+                    if($_FILES["fileToUpload"]["error"] < 20000){
+                        try{
+                            if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
+                            {
+                                $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";
+                            }
+                            else
+                            {
+                                move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$file);
+                            }
+                        }           
+                        catch(PDOException $e)
                         {
-                            $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";
+                            echo "Error in Uploading the File.";
+                            die();
                         }
-                        else
-                        {
-                            move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$file);
-                            echo "Upload with sucess";    
-                        }
-                    }           
-                    catch(PDOException $e)
-                    {
-                        echo "Error in Uploading the File.";
-                    }
+                    }else{
+                        echo "Ficheiro muito grande";
+                        die();
+                    } 
                 }
             }
         }else{
             echo "Escolha um ficheiro";
+            die();
         }   
 
 
@@ -112,15 +140,12 @@ if(isset($_POST['submit'])){
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
-
-
-            $user_id =  $_SESSION['user_Id'];    
-
+              
             $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID, NotaID) VALUES ('$file', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id', '1');";
 
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Base de Dados atualizada";
+            echo "<br><br><br>Base de Dados atualizada";
         
         
             $db = null;

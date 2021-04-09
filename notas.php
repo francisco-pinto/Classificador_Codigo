@@ -1,5 +1,8 @@
 <?php
 
+    ob_start();
+    session_start();
+
     $servername = "localhost";
     $username = "root";         //Default credencials wamp
     $password = "";
@@ -13,8 +16,6 @@
         echo "Connection failed: " . $e->getMessage();
     }
 
-   ob_start();
-   session_start();
 
     if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
     {
@@ -43,12 +44,12 @@
 			</thead>
 			<tbody>
             <?php
-            while($data = $query->fetch(PDO::FETCH_ASSOC))
-            {
-            echo "<tr>";
-            echo "<td>".$data['Id']."</td>";
-            echo "<td>".$data['Classificacao']."</td>";
-            }
+                while($data = $query->fetch(PDO::FETCH_ASSOC))
+                {
+                    echo "<tr>";
+                    echo "<td>".$data['Id']."</td>";
+                    echo "<td>".$data['Classificacao']."</td>";
+                }
             ?>
 			</tbody>
 		</table>
