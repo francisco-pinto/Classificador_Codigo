@@ -17,6 +17,9 @@
     <body>
 
         <form action="" method="post" enctype="multipart/form-data">
+
+
+            <!-- Adicionar lingaugens com base de Dados -->
             Escolher a linguagem:
             <input type="radio" id="c" name="language" value="c">
             <label for="c">C</label><br>
@@ -111,7 +114,10 @@ if(isset($_POST['submit'])){
                 echo "Connected successfully";
 
 
-            $sql = "INSERT INTO ficheiro VALUES ('$file', $fileSize, '$language', '$filePath', $todayDate, $_SESSION['user_Id'], 1);";
+            $user_id =  $_SESSION['user_Id'];    
+
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID, NotaID) VALUES ('$file', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id', '1');";
+
             // use exec() because no results are returned
             $db->exec($sql);
             echo "Base de Dados atualizada";
