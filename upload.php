@@ -37,7 +37,13 @@
                 $sql = "SELECT * FROM Linguagem";
 
                 $q = $db->prepare($sql);
-                $q->execute(['%son']);
+
+
+
+
+
+                //SON?
+                $q->execute();
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($linguagens = $q->fetch()) {
@@ -106,8 +112,7 @@ if(isset($_POST['submit'])){
                         try{
                             if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
                             {
-                                $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";
-                                
+                                $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";         
                             }
                             else
                             {
