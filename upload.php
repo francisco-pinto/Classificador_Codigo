@@ -37,12 +37,6 @@
                 $sql = "SELECT * FROM Linguagem";
 
                 $q = $db->prepare($sql);
-
-
-
-
-
-                //SON?
                 $q->execute();
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
