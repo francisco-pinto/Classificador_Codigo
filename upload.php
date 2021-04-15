@@ -75,17 +75,16 @@ if(isset($_POST['submit'])){
 
 
 
-
         /*Upload do ficheiro*/
         $user_id =  $_SESSION['user_Id'];  
         $language = $_POST['language'];
-        $file=$_FILES["fileToUpload"]["name"];
+        $filename= time() . "_" .$_FILES["fileToUpload"]["name"];
         $fileSize=$_FILES["fileToUpload"]["size"];
         $filePath=$_FILES["fileToUpload"]["tmp_name"];
         $todayDate = date("Y-m-d H:i:s");
 
 
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
         //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
         
         echo "Inicio do upload</br>";
@@ -104,14 +103,7 @@ if(isset($_POST['submit'])){
                 {   //Limitar o tamanho do upload (20 mb atualmente)
                     if($_FILES["fileToUpload"]["size"] < 20971520){
                         try{
-                            if (file_exists("./Uploads/" . $_FILES["fileToUpload"]["name"]))
-                            {
-                                $alert= $_FILES["fileToUpload"]["name"] . " already exists. ";         
-                            }
-                            else
-                            {
-                                move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$file);
-                            }
+                            move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$filename);
                         }           
                         catch(PDOException $e)
                         {
@@ -141,12 +133,12 @@ if(isset($_POST['submit'])){
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
               
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID) VALUES ('$file', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id');";
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID) VALUES ('$filename', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id');";
 
             // use exec() because no results are returned
             $db->exec($sql);
             echo "<br><br><br>Base de Dados atualizada";
-        
+            die();
         
             $db = null;
         } catch(PDOException $e) {
