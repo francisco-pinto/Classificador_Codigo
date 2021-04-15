@@ -23,7 +23,7 @@
     }else 
     {
         header("Location: login.php");
-        die(); //pega
+        die();
     }
 ?>
 
@@ -32,7 +32,7 @@
 <html>
     <body>
     <?php
-    $query = $db->query('SELECT * FROM Nota');
+    $query = $db->query('SELECT Nome, nota1.Classificacao FROM Utilizador m JOIN Nota nota1 ON m.NotaID = nota1.Id'); //pega
     ?>
 
     <table>
@@ -47,7 +47,7 @@
                 while($data = $query->fetch(PDO::FETCH_ASSOC))
                 {
                     echo "<tr>";
-                    echo "<td>".$data['Id']."</td>";
+                    echo "<td>".$data['Nome']."</td>";
                     echo "<td>".$data['Classificacao']."</td>";
                 }
             ?>
