@@ -34,7 +34,7 @@
 ?>
 
 
-<html lang = "en">
+<html lang = "pt">
    
    <head>
       <title>Login</title>

@@ -2,6 +2,8 @@
    ob_start();
    session_start();
 
+   //Verificação de professor ou aluno
+
     if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
     {
         echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
@@ -11,8 +13,9 @@
         die(); //pega
     }
 ?>
-            
-<html lang = "pt">
+
+         
+<html lang = "en">
    
    <head>
       <title>Index</title>
