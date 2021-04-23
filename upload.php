@@ -32,17 +32,17 @@
     <body>
 
         <form action="" method="post" enctype="multipart/form-data">
-            <label for="Linguagens">Escolher a linguagem:</label><br>
+            <label for="Projeto">Escolher o projeto:</label><br>
             <?php
-                $sql = "SELECT * FROM Linguagem";
+                $sql = "SELECT * FROM Projeto";
 
                 $q = $db->prepare($sql);
                 $q->execute();
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
-                while ($linguagens = $q->fetch()) {
-                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="language" value="' . $linguagens['Linguagem'] . '">';
-                    echo '<label for="' . $linguagens['Linguagem'] . '">' . $linguagens['Linguagem'] . '</label><br>';
+                while ($projeto = $q->fetch()) {
+                    echo '<input type="radio" id="' . $projeto['Id'] . '" name="projeto" value="' . $projeto['Nome'] . '">';
+                    echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
                 }
             ?>
             <br>
@@ -53,7 +53,7 @@
 
             Submeter um ficheiro:
             <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload Image" name="submit">
+            <input type="submit" value="Upload File" name="submit">
         </form>
 
     </body>
@@ -63,17 +63,6 @@
 <?php
 if(isset($_POST['submit'])){
     if(!empty($_POST['language'])){
-
-        if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
-        {
-            echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
-        }else 
-        {
-            header("Location: login.php");
-            die(); //pega
-        }
-
-
 
         /*Upload do ficheiro*/
         $user_id =  $_SESSION['user_Id'];  
@@ -147,7 +136,7 @@ if(isset($_POST['submit'])){
     
     }    
     else{
-        echo "Escolha uma das linguagens";
+        echo "Escolha um dos projetos";
     }
 }
 
