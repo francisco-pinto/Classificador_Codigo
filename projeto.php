@@ -135,7 +135,7 @@
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($linguagens = $q->fetch()) {
-                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="language" value="' . $linguagens['Linguagem'] . '">';
+                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" value="' . $linguagens['Id'] . '">';
                     echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
                 }
             ?>
@@ -160,7 +160,7 @@
 
 <?php
     if(isset($_POST['submit'])){
-        if(!empty($_POST['language'])){
+        if(!empty($_POST['languageID'])){
             if(!empty($_POST['name'])){
                 if(!empty($_POST['input']) && !empty($_POST['output'])){
                     if(!empty($_POST['Begin_Date']) || $_POST['Begin_Date'] > date("d/m/y")){
@@ -170,7 +170,7 @@
 
                             
                             $user_id =  $_SESSION['user_Id'];  
-                            $language = $_POST['language'];
+                            $languageID = $_POST['languageID'];
                             $name= $_POST['name'];
                             $input = $_POST['input'];
                             $output = $_POST['output'];
@@ -178,6 +178,7 @@
                             $End_Date = $_POST['End_Date'];
 
 
+                            /* Inserir os valores de casos de teste */
                             $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output) VALUES ('$input', '$output');";
                             $CasosTeste = $db->query($sql_Casos_Teste);
                             //$CasosTeste->fetch(PDO::FETCH_ASSOC); 
@@ -185,30 +186,24 @@
                             //acabar o processo
 
 
-
-
-                            /*Está a dar erro ao dar upload 
-                            do projeto. Os valores estão a ir
-                            a 0.
-                            Está a inserir 4 valores em simultâneo
-                            dos casos de teste*/
-
-
-
-
-
-
                             //Get Casos Teste ID
                             $SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output'";
                             $CasosTesteID = $db->query($SQL_CasosTesteID);
                             $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC); //Responsável pelo retorno do valor
 
-                            //Get Language ID
-                            $SQL_languageID = "SELECT Id FROM linguagem WHERE Linguagem = '$language'";
-                            $languageID = $db->query($SQL_CasosTesteID);
-                            $languageID = $languageID->fetch(PDO::FETCH_ASSOC);
+                            echo "Casos de Teste ID: $CasosTesteID ";
+                            echo "Begin Date: $Begin_Date ";
+                            echo "End Date: $End_Date ";
+                            echo "Language ID: $languageID ";                            
 
-                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Begin_Date', '$End_Date', '$languageID', '$CasosTesteID');";
+                            $Begin_Date = str_replace('/', '-', $Begin_Date);
+                            $End_Date = str_replace('/', '-', $End_Date);
+
+                            $Data_Inicio = strtotime($Begin_Date);
+                            $Data_Fim = strtotime($End_Date);
+
+
+                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID', '$CasosTesteID');";
         
                             // use exec() because no results are returned
                             $db->exec($sql);

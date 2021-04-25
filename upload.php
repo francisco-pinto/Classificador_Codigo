@@ -2,7 +2,7 @@
    ob_start();
    session_start();
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
+    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1) 
     {
         echo "Welcome to the Upload's area, " . $_SESSION['user_Username'] . "!";
     }else 
