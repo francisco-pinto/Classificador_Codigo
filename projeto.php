@@ -4,7 +4,7 @@
 
    //Verificação de professor ou aluno
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
+    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2) 
     {
         echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
     }else 
@@ -98,7 +98,9 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
             $( function() {
-                $( "#datepicker" ).datepicker();
+                //Permite a seleção de duas datas (Início e fim do projeto)
+                $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });
+                $( "#datepicker2" ).datepicker({ dateFormat: 'dd/mm/yy' });
             } );
         </script>
    </head>
@@ -133,8 +135,8 @@
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($linguagens = $q->fetch()) {
-                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="' . $linguagens['Id'] . '" value="' . $linguagens['Linguagem'] . '">';
-                    echo '<label for="' . $linguagens['Linguagem'] . '">' . $linguagens['Linguagem'] . '</label><br>';
+                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="language" value="' . $linguagens['Linguagem'] . '">';
+                    echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
                 }
             ?>
             <br>
@@ -146,7 +148,7 @@
             <!-- Data de início e data de fim do projeto -->
             <p>Data de início de Projeto: <input type="text" id="datepicker" name="Begin_Date"></p>
             <br><br>
-            <p>Data de Fim de Projeto: <input type="text" id="datepicker" name="End_Date"></p>
+            <p>Data de Fim de Projeto: <input type="text" id="datepicker2" name="End_Date"></p>
 
             <input type="submit" value="Submeter" name="submit">
         </form>
@@ -161,37 +163,59 @@
         if(!empty($_POST['language'])){
             if(!empty($_POST['name'])){
                 if(!empty($_POST['input']) && !empty($_POST['output'])){
-                    if(!empty($_POST['Begin_Date']) || $_POST['Begin_Date'] > date("Y/m/d")){
-
-                        echo "Início da colocação do projeto";
-
+                    if(!empty($_POST['Begin_Date']) || $_POST['Begin_Date'] > date("d/m/y")){
+                        if(!empty($_POST['End_Date']) || $_POST['End_Date'] > $_POST['Begin_Date']){
                         
-                        $user_id =  $_SESSION['user_Id'];  
-                        $languageID = $_POST['language'];
-                        $name= $_POST['name'];
-                        $input = $_POST['input'];
-                        $output = $_POST['output'];
-                        $Begin_Date = $_POST['Begin_Date'];
-                        $End_Date = $_POST['End_Date'];
+                            echo "Início da colocação do projeto";
+
+                            
+                            $user_id =  $_SESSION['user_Id'];  
+                            $language = $_POST['language'];
+                            $name= $_POST['name'];
+                            $input = $_POST['input'];
+                            $output = $_POST['output'];
+                            $Begin_Date = $_POST['Begin_Date'];
+                            $End_Date = $_POST['End_Date'];
+
+
+                            $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output) VALUES ('$input', '$output');";
+                            $CasosTeste = $db->query($sql_Casos_Teste);
+                            //$CasosTeste->fetch(PDO::FETCH_ASSOC); 
+                            //Responsável pelo retorno do valor. Neste caso será só para 
+                            //acabar o processo
 
 
 
 
-                        $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output) VALUES ('$input', '$output');";
-                    
-                        $SQL_CasosTesteID = "SELECT ID FROM Casos_Teste WHERE Input = '$input' and Output = '$output'";
-                        $CasosTesteID = $db->exec($SQL_CasosTesteID);
+                            /*Está a dar erro ao dar upload 
+                            do projeto. Os valores estão a ir
+                            a 0.
+                            Está a inserir 4 valores em simultâneo
+                            dos casos de teste*/
 
-                        $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, Linguagem, Data_Upload, CasosTesteID) VALUES ('$name', '$Begin_Date', '$End_Date', '$languageID', '$todayDate', '$CasosTesteID');";
-    
-                        // use exec() because no results are returned
-                        $db->exec($sql_Casos_Teste);
-                        $db->exec($sql);
-                        echo "<br><br><br>Base de Dados atualizada";
-                        die();
+
+
+
+
+
+                            //Get Casos Teste ID
+                            $SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output'";
+                            $CasosTesteID = $db->query($SQL_CasosTesteID);
+                            $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC); //Responsável pelo retorno do valor
+
+                            //Get Language ID
+                            $SQL_languageID = "SELECT Id FROM linguagem WHERE Linguagem = '$language'";
+                            $languageID = $db->query($SQL_CasosTesteID);
+                            $languageID = $languageID->fetch(PDO::FETCH_ASSOC);
+
+                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Begin_Date', '$End_Date', '$languageID', '$CasosTesteID');";
+        
+                            // use exec() because no results are returned
+                            $db->exec($sql);
+                            echo "<br><br><br>Base de Dados atualizada";
+                            die();
                         
-
-                        echo "Base de Dados atualizada";
+                        }
                     }else{
                         echo "Data Inválida";
                     }

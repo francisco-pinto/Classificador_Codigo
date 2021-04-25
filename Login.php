@@ -125,6 +125,7 @@
                     if($count == 1 && !empty($row)) {
                     /******************** Your code ***********************/
                         $_SESSION['user_Id']   = $row['Id'];
+                        $_SESSION['usertype_Id']   = $row['Tipo_UtilizadorID'];
                         $_SESSION['user_Username'] = $row['Username'];
                         $_SESSION['user_Name'] = $row['Nome'];
 
