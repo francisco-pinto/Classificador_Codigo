@@ -167,15 +167,21 @@
                     $inicio_date = $_POST['Begin_Date'];
                     $fim_date = $_POST['End_Date'];
 
-                    $Data_Inicio = date('Y/m/d', $inicio_date);
-                    $Data_Fim = date('Y/m/d', $fim_date);
+                    $inicio_date = str_replace('/', '-', $inicio_date);
+                    $fim_date = str_replace('/', '-', $fim_date);
 
-                    echo "Data de Início: $Data_Inicio <br>";
-                    echo "Data de Fim: $Data_Fim <br><br><br>";
+                    /*echo "$inicio_date <br>";
+                    echo "$fim_date <br>";*/
+
+                    $Data_Inicio = date('Y-m-d H:i:s', strtotime($inicio_date)); 
+                    $Data_Fim = date('Y-m-d H:i:s', strtotime($fim_date));
+
+                    /*echo "Data de Início: $Data_Inicio <br>";
+                    echo "Data de Fim: $Data_Fim <br><br><br>";*/
 
 
-                    if(!empty($_POST['Begin_Date']) || $Data_Inicio > date("d/m/y")){
-                        if(!empty($_POST['End_Date']) || $Data_Fim > $Data_Inicio){
+                    if(!empty($_POST['Begin_Date']) && $Data_Inicio > date("Y-m-d H:i:s")){
+                        if(!empty($_POST['End_Date']) && $Data_Fim > $Data_Inicio){
                         
                             echo "Início da colocação do projeto";
 
@@ -185,8 +191,6 @@
                             $name= $_POST['name'];
                             $input = $_POST['input'];
                             $output = $_POST['output'];
-                            $Begin_Date = $_POST['Begin_Date'];
-                            $End_Date = $_POST['End_Date'];
 
 
                             /* Inserir os valores de casos de teste */
@@ -203,29 +207,31 @@
                             $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC);*/
                             //Responsável pelo retorno do valor
 
-                            echo "<br> Casos de Teste ID: $CasosTesteID <br>";
-                            echo "Begin Date: $Begin_Date <br>";
-                            echo "End Date: $End_Date <br>";
-                            echo "Language ID: $languageID <br>";                            
+                            /*echo "<br> Casos de Teste ID: $CasosTesteID <br>";
+                            echo "Begin Date: $Data_Inicio <br>";
+                            echo "End Date: $Data_Fim <br>";
+                            echo "Language ID: $languageID <br>";   */                         
 
                             /*$Begin_Date = str_replace('/', '-', $Begin_Date);
                             $End_Date = str_replace('/', '-', $End_Date);
 
                             $Data_Inicio = strtotime($Begin_Date);
                             $Data_Fim = strtotime($End_Date);*/
-                            $Begin_DateTimestamp = date('Y-m-d H:i:s', strtotime($Begin_Date));  
-                            $End_DateTimestamp = date('Y-m-d H:i:s', strtotime($End_Date));  
+                            /*$Begin_DateTimestamp = date('Y-m-d H:i:s', strtotime($Begin_Date));  
+                            $End_DateTimestamp = date('Y-m-d H:i:s', strtotime($End_Date));  */
 
-                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Begin_DateTimestamp', '$End_DateTimestamp', '$languageID', '$CasosTesteID');";
+                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID', '$CasosTesteID');";
         
                             // use exec() because no results are returned
                             $db->exec($sql);
                             echo "<br><br><br>Base de Dados atualizada";
                             die();
                         
+                        }else{
+                        echo "Data final terá de ser superior à data inicial";
                         }
                     }else{
-                        echo "Data Inválida";
+                        echo "Data Inválida. Dia terá de ser superiro ao de hoje";
                     }
                 }else{
                     echo "Complete os casos de teste";
