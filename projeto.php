@@ -163,8 +163,19 @@
         if(!empty($_POST['languageID'])){
             if(!empty($_POST['name'])){
                 if(!empty($_POST['input']) && !empty($_POST['output'])){
-                    if(!empty($_POST['Begin_Date']) || $_POST['Begin_Date'] > date("d/m/y")){
-                        if(!empty($_POST['End_Date']) || $_POST['End_Date'] > $_POST['Begin_Date']){
+
+                    $inicio_date = $_POST['Begin_Date'];
+                    $fim_date = $_POST['End_Date'];
+
+                    $Data_Inicio = date('Y/m/d', $inicio_date);
+                    $Data_Fim = date('Y/m/d', $fim_date);
+
+                    echo "Data de Início: $Data_Inicio <br>";
+                    echo "Data de Fim: $Data_Fim <br><br><br>";
+
+
+                    if(!empty($_POST['Begin_Date']) || $Data_Inicio > date("d/m/y")){
+                        if(!empty($_POST['End_Date']) || $Data_Fim > $Data_Inicio){
                         
                             echo "Início da colocação do projeto";
 
@@ -181,29 +192,31 @@
                             /* Inserir os valores de casos de teste */
                             $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output) VALUES ('$input', '$output');";
                             $CasosTeste = $db->query($sql_Casos_Teste);
-                            //$CasosTeste->fetch(PDO::FETCH_ASSOC); 
-                            //Responsável pelo retorno do valor. Neste caso será só para 
-                            //acabar o processo
+                           
+                            /*Ir buscar o último ID que foi inserido
+                            ,ou seja, o ID do casos de teste*/
+                            $stmt = $db->query("SELECT LAST_INSERT_ID()");
+                            $CasosTesteID = $stmt->fetchColumn();
 
-
-                            //Get Casos Teste ID
-                            $SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output'";
+                            /*$SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output' AND Data_CasosTeste = '$todayDate'";                          
                             $CasosTesteID = $db->query($SQL_CasosTesteID);
-                            $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC); //Responsável pelo retorno do valor
+                            $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC);*/
+                            //Responsável pelo retorno do valor
 
-                            echo "Casos de Teste ID: $CasosTesteID ";
-                            echo "Begin Date: $Begin_Date ";
-                            echo "End Date: $End_Date ";
-                            echo "Language ID: $languageID ";                            
+                            echo "<br> Casos de Teste ID: $CasosTesteID <br>";
+                            echo "Begin Date: $Begin_Date <br>";
+                            echo "End Date: $End_Date <br>";
+                            echo "Language ID: $languageID <br>";                            
 
-                            $Begin_Date = str_replace('/', '-', $Begin_Date);
+                            /*$Begin_Date = str_replace('/', '-', $Begin_Date);
                             $End_Date = str_replace('/', '-', $End_Date);
 
                             $Data_Inicio = strtotime($Begin_Date);
-                            $Data_Fim = strtotime($End_Date);
+                            $Data_Fim = strtotime($End_Date);*/
+                            $Begin_DateTimestamp = date('Y-m-d H:i:s', strtotime($Begin_Date));  
+                            $End_DateTimestamp = date('Y-m-d H:i:s', strtotime($End_Date));  
 
-
-                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID', '$CasosTesteID');";
+                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Begin_DateTimestamp', '$End_DateTimestamp', '$languageID', '$CasosTesteID');";
         
                             // use exec() because no results are returned
                             $db->exec($sql);
