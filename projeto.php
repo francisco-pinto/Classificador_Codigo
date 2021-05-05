@@ -55,22 +55,55 @@
         <h2>Criação de Projeto</h2>  
         
         <h3>Insira os critérios de avaliação</h3>
-        
+                
+
 
         <!-- Quantos input e output iremos ter? Fazer dinamicamente casos de teste -->
         <form action="" method="post" enctype="multipart/form-data">
             <label for="name">Nome do Projeto:</label>
             <input type="text" id="text" name="name"><br><br><br><br>
-            <label for="input">Input:</label>
+
+            <!-- Número de casos de teste que pretende -->
+            <div class="NumCasosTeste">
+                <label for="CasosTeste">Números de Casos Teste (Min: 1 | Máx: 8) : </label>
+                <input type="text" id="textCasosTeste" name="CasosTesteNum"><br><br>
+                <input type="button" value="Submeter" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
+            </div>
+
+            <!-- Casos Teste -->
+            <div id="DisplayCasosTeste" class = "CasosTeste" >
+                <?php
+                    /*Para casos Teste*/
+                    //$numCasos = 0;
+
+                    /*Atribuição dos Casos teste*/
+                    /* if(isset($_POST['submit_Casos'])){
+                        $numCasos = $_POST['CasosTesteNum'];
+
+                        if($numCasos > 0 && $numCasos < 8){
+                            for ($i = 1; $i <= $numCasos; $i++) {
+                                echo '<label for="input">Input:</label>
+                                <input type="text" id="input' . $i . ' " name="input"><br><br>
+                                <label for="output">Output:</label>
+                                <input type="text" id="output' . $i . ' " name="output"><br><br>';
+                            }
+                        }else{
+                            echo "Insira um valor correto.";
+                        }
+                    }*/
+                ?>
+            </div>
+
+      <!--      <label for="input">Input:</label>
             <input type="text" id="input" name="input"><br><br>
             <label for="output">Output:</label>
-            <input type="text" id="output" name="output"><br><br>
+            <input type="text" id="output" name="output"><br><br>-->
+
+
             <br>
             <br>
-            <br>
-            <br>  
     
-        <!-- Escolha da linguagem de programação -->
+            <!-- Escolha da linguagem de programação -->
             <label for="Linguagens">Escolher a linguagem:</label><br>
             <?php
                 $sql = "SELECT * FROM Linguagem";
@@ -95,7 +128,7 @@
             <br><br>
             <p>Data de Fim de Projeto: <input type="text" id="datepicker2" name="End_Date"></p>
 
-            <input type="submit" value="Submeter" name="submit">
+            <input type="submit" value="Submeter" name="submit_Total">
         </form>
 
 
@@ -103,11 +136,59 @@
 </html>
 
 
+<script>
+    function addCasosTeste() {
+
+        var numCasos = document.getElementById('textCasosTeste').value;
+        var foo = document.getElementById("DisplayCasosTeste");
+
+        var inputText = "Input<br>";
+        var outputText = "<br>Output";
+       
+        for(var i = 0; i < numCasos; i++){
+            //Create an input type dynamically.   
+            var elementInput = document.createElement("input");
+            //Assign different attributes to the element. 
+            elementInput.type = text;
+            elementInput.value = " ";
+            elementInput.name = "input"; 
+
+            foo.appendChild(elementInput);
+        }
+
+        for(var i = 0; i < numCasos; i++){
+            //Create an input type dynamically.   
+            var elementOutput = document.createElement("input");
+            //Assign different attributes to the element. 
+            elementOutput.type = text;
+            elementOutput.value = " ";
+            elementOutput.name = "output"; 
+
+            foo.appendChild(elementOutput);
+        }
+
+        /*var elementOutput = document.createElement("input");
+        //Assign different attributes to the element. 
+        elementOutput.type = text;
+        elementOutput.value = " ";
+        elementOutput.name = "output"; */
+
+
+        //Append the element in page (in span).  
+        //foo.appendChild(elementOutput);
+
+    }
+</script>
+
+
+
 <?php
-    if(isset($_POST['submit'])){
+
+    /*Submissão na base de dados*/
+    if(isset($_POST['submit_Total'])){
         if(!empty($_POST['languageID'])){
             if(!empty($_POST['name'])){
-                if(!empty($_POST['input']) && !empty($_POST['output'])){
+                if(!empty($_POST['input']) && !empty($_POST['output'])){      //Tem pelo menos um input
 
                     $inicio_date = $_POST['Begin_Date'];
                     $fim_date = $_POST['End_Date'];
@@ -134,18 +215,26 @@
                             $user_id =  $_SESSION['user_Id'];  
                             $languageID = $_POST['languageID'];
                             $name= $_POST['name'];
-                            $input = $_POST['input'];
-                            $output = $_POST['output'];
 
+
+                            /*Criação do Projeto*/
+                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID');";
+        
+
+                            /*Ir buscar o último ID que foi inserido
+                            ,ou seja, o ID do último projeto*/
+                            $stmt = $db->query("SELECT LAST_INSERT_ID()");
+                            $ProjetoID = $stmt->fetchColumn();
 
                             /* Inserir os valores de casos de teste */
-                            $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output) VALUES ('$input', '$output');";
-                            $CasosTeste = $db->query($sql_Casos_Teste);
-                           
-                            /*Ir buscar o último ID que foi inserido
-                            ,ou seja, o ID do casos de teste*/
-                            $stmt = $db->query("SELECT LAST_INSERT_ID()");
-                            $CasosTesteID = $stmt->fetchColumn();
+                            for ($i = 1; $i <= $numCasos; $i++) {
+                                $input = $_POST['input' . $i . ''];
+                                $output = $_POST['output' . $i . ''];
+                                
+                                $sql_Casos_Teste = "INSERT INTO Casos_Teste (Input, Output, ProjetoID) VALUES ('$input', '$output', '$ProjetoID');";
+                                $CasosTeste = $db->query($sql_Casos_Teste);
+                            }
+
 
                             /*$SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output' AND Data_CasosTeste = '$todayDate'";                          
                             $CasosTesteID = $db->query($SQL_CasosTesteID);
@@ -165,8 +254,7 @@
                             /*$Begin_DateTimestamp = date('Y-m-d H:i:s', strtotime($Begin_Date));  
                             $End_DateTimestamp = date('Y-m-d H:i:s', strtotime($End_Date));  */
 
-                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID, CasosTesteID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID', '$CasosTesteID');";
-        
+                            
                             // use exec() because no results are returned
                             $db->exec($sql);
                             echo "<br><br><br>Base de Dados atualizada";
