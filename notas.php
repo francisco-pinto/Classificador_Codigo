@@ -30,6 +30,11 @@
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Notas</title>
+        <link rel="stylesheet" href="css/style.css">      
+    </head>
+
     <body>
     <?php
     $query = $db->query('SELECT Nome, nota1.Classificacao FROM Utilizador m JOIN Nota nota1 ON m.NotaID = nota1.Id'); //pega
