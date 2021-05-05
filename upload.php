@@ -47,7 +47,8 @@
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($projeto = $q->fetch()) {
-                    echo '<input type="radio" id="' . $projeto['Id'] . '" name="projeto" value="' . $projeto['Nome'] . '">';
+                    $linguagem_id = $projeto["LinguagemID"];
+                    echo '<input type="radio" id="' . $projeto['Id'] . '" name="projetoID" value="' . $projeto['Id'] . '">';
                     echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
                 }
             ?>
@@ -68,20 +69,21 @@
 
 <?php
 if(isset($_POST['submit'])){
-    if(!empty($_POST['language'])){
+    if(!empty($_POST['projetoID'])){
 
         /*Upload do ficheiro*/
         $user_id =  $_SESSION['user_Id'];  
-        $language = $_POST['language'];
         $filename= time() . "_" .$_FILES["fileToUpload"]["name"];
         $fileSize=$_FILES["fileToUpload"]["size"];
         $filePath=$_FILES["fileToUpload"]["tmp_name"];
         $todayDate = date("Y-m-d H:i:s");
+        $projeto_id = $_POST["projetoID"];
+        
 
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
-        
+        $fileType = $ext;
         echo "Inicio do upload</br>";
         //echo $language;
         
@@ -98,6 +100,9 @@ if(isset($_POST['submit'])){
                 {   //Limitar o tamanho do upload (20 mb atualmente)
                     if($_FILES["fileToUpload"]["size"] < 20971520){
                         try{
+                            if (!file_exists('./Uploads/')) {
+                                mkdir('./Uploads/', 0777, true);
+                            }
                             move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], "./Uploads/".$filename);
                         }           
                         catch(PDOException $e)
@@ -128,7 +133,7 @@ if(isset($_POST['submit'])){
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
               
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Linguagem, Destino, Data_Upload, UtilizadorID) VALUES ('$filename', '$fileSize', '$language', '$filePath', '$todayDate', '$user_id');";
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID, LinguagemID) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id', '$linguagem_id');";
 
             // use exec() because no results are returned
             $db->exec($sql);
