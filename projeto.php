@@ -67,31 +67,24 @@
             <div class="NumCasosTeste">
                 <label for="CasosTeste">Números de Casos Teste (Min: 1 | Máx: 8) : </label>
                 <input type="text" id="textCasosTeste" name="CasosTesteNum"><br><br>
-                <input type="button" value="Submeter" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
+                <input type="button" value="Inserir" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
             </div>
 
             <!-- Casos Teste -->
-            <div id="DisplayCasosTeste" class = "CasosTeste" >
-                <?php
-                    /*Para casos Teste*/
-                    //$numCasos = 0;
+            <div id="DisplayCasosTeste" class="CasosTeste" >
+                
+                <h3>Inputs</h3>
 
-                    /*Atribuição dos Casos teste*/
-                    /* if(isset($_POST['submit_Casos'])){
-                        $numCasos = $_POST['CasosTesteNum'];
+                <div id="InputDiv" >
+                
+                </div>
 
-                        if($numCasos > 0 && $numCasos < 8){
-                            for ($i = 1; $i <= $numCasos; $i++) {
-                                echo '<label for="input">Input:</label>
-                                <input type="text" id="input' . $i . ' " name="input"><br><br>
-                                <label for="output">Output:</label>
-                                <input type="text" id="output' . $i . ' " name="output"><br><br>';
-                            }
-                        }else{
-                            echo "Insira um valor correto.";
-                        }
-                    }*/
-                ?>
+                <br>
+                <h3>Outputs</h3>
+
+                <div id="OutputDiv" >
+                
+                </div>
             </div>
 
       <!--      <label for="input">Input:</label>
@@ -138,34 +131,58 @@
 
 <script>
     function addCasosTeste() {
-
+        
         var numCasos = document.getElementById('textCasosTeste').value;
-        var foo = document.getElementById("DisplayCasosTeste");
 
-        var inputText = "Input<br>";
-        var outputText = "<br>Output";
-       
-        for(var i = 0; i < numCasos; i++){
-            //Create an input type dynamically.   
-            var elementInput = document.createElement("input");
-            //Assign different attributes to the element. 
-            elementInput.type = text;
-            elementInput.value = " ";
-            elementInput.name = "input"; 
+        if(numCasos > 0 && numCasos <9){
+            var inputDiv = document.getElementById("InputDiv");
+            var outputDiv = document.getElementById("OutputDiv");
 
-            foo.appendChild(elementInput);
+            var tabspace = document.createElement("p");
+            tabspace.innerHTML = "&nbsp";
+
+            //Limpa as divs caso já tenham sido escolhidas o num de inputs/outputs
+            document.getElementById("InputDiv").innerHTML = "";
+            document.getElementById("OutputDiv").innerHTML = "";
+
+
+            for(var i = 0; i < numCasos; i++){
+                var name = "input" + i;
+
+                //Create an input type dynamically.   
+                var elementInput = document.createElement("input");
+                //Assign different attributes to the element. 
+                elementInput.type = text;
+                elementInput.value = " ";
+                elementInput.name = name; 
+
+                inputDiv.appendChild(elementInput);
+                inputDiv.appendChild(tabspace);
+
+
+            }
+
+            for(var i = 0; i < numCasos; i++){
+                var name = "output" + i;
+
+                console.log(name);
+
+                //Create an input type dynamically.   
+                var elementOutput = document.createElement("input");
+                //Assign different attributes to the element. 
+                elementOutput.type = text;
+                elementOutput.value = " ";
+                elementOutput.name = name; 
+
+                outputDiv.appendChild(elementOutput);
+                outputDiv.appendChild(tabspace);
+
+
+            }
+        }else{
+            //Echo Insira um valor correto 
         }
-
-        for(var i = 0; i < numCasos; i++){
-            //Create an input type dynamically.   
-            var elementOutput = document.createElement("input");
-            //Assign different attributes to the element. 
-            elementOutput.type = text;
-            elementOutput.value = " ";
-            elementOutput.name = "output"; 
-
-            foo.appendChild(elementOutput);
-        }
+        
 
         /*var elementOutput = document.createElement("input");
         //Assign different attributes to the element. 
@@ -188,7 +205,7 @@
     if(isset($_POST['submit_Total'])){
         if(!empty($_POST['languageID'])){
             if(!empty($_POST['name'])){
-                if(!empty($_POST['input']) && !empty($_POST['output'])){      //Tem pelo menos um input
+                if(!empty($_POST['input0']) && !empty($_POST['output0'])){      //Tem pelo menos um input
 
                     $inicio_date = $_POST['Begin_Date'];
                     $fim_date = $_POST['End_Date'];
@@ -215,8 +232,8 @@
                             $user_id =  $_SESSION['user_Id'];  
                             $languageID = $_POST['languageID'];
                             $name= $_POST['name'];
-
-
+                            $numCasos = $_POST['CasosTesteNum'];
+                            
                             /*Criação do Projeto*/
                             $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID');";
         
@@ -226,8 +243,10 @@
                             $stmt = $db->query("SELECT LAST_INSERT_ID()");
                             $ProjetoID = $stmt->fetchColumn();
 
+                            ECHO "<br>Id do projeto: $ProjetoID<br>";
+
                             /* Inserir os valores de casos de teste */
-                            for ($i = 1; $i <= $numCasos; $i++) {
+                            for ($i = 0; $i < $numCasos; $i++) {
                                 $input = $_POST['input' . $i . ''];
                                 $output = $_POST['output' . $i . ''];
                                 
