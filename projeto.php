@@ -41,6 +41,8 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js"></script>
+
         <script>
             $( function() {
                 //Permite a seleção de duas datas (Início e fim do projeto)
@@ -121,6 +123,28 @@
             <br><br>
             <p>Data de Fim de Projeto: <input type="text" id="datepicker2" name="End_Date"></p>
 
+            <br>
+            <br>    
+
+            <!-- Funções que são proibídas no projeto -->
+            <div class="FuncoesProibidasClass">
+                <label>Nomes das funções proibidas a utilizar: </label>
+                <input type="text" id="TextFuncoesProibidas" name="FuncoesProibidas"><br><br>
+                <input type="button" value="Inserir" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
+            </div>
+
+            <!-- Funções proibídas -->
+            <div id="DisplayFuncoesProibidas" class="CasosTeste" >
+                <h3>Funções proibidas</h3>
+
+                <div id="FuncoesProibidasInput" >
+                
+                </div>
+            </div>
+
+            <br>
+            <br>    
+
             <input type="submit" value="Submeter" name="submit_Total">
         </form>
 
@@ -130,6 +154,28 @@
 
 
 <script>
+
+    function addFuncoesProibidas(){
+       
+        var numFuncoes = document.getElementById('TextFuncoesProibidas').value;
+   
+        var inputDiv = document.getElementById("FuncoesProibidasInput"); 
+
+        for(var i = 0; i < numFuncoes; i++){
+            var name = "funcaoP" + i;
+
+            //Create an input type dynamically.   
+            var elementInput = document.createElement("input");
+            //Assign different attributes to the element. 
+            elementInput.type = text;
+            elementInput.value = " ";
+            elementInput.name = name; 
+
+            inputDiv.appendChild(elementInput);
+        }
+    }
+
+
     function addCasosTeste() {
         
         var numCasos = document.getElementById('textCasosTeste').value;
@@ -141,10 +187,7 @@
             var tabspace = document.createElement("p");
             tabspace.innerHTML = "&nbsp";
 
-            //Limpa as divs caso já tenham sido escolhidas o num de inputs/outputs
-            document.getElementById("InputDiv").innerHTML = "";
-            document.getElementById("OutputDiv").innerHTML = "";
-
+            
 
             for(var i = 0; i < numCasos; i++){
                 var name = "input" + i;
@@ -181,6 +224,11 @@
             }
         }else{
             //Echo Insira um valor correto 
+            //Limpa as divs caso já tenham sido escolhidas o num de inputs/outputs
+            document.getElementById("InputDiv").innerHTML = "";
+            document.getElementById("OutputDiv").innerHTML = "";
+
+            document.getElementById("textCasosTeste").value = '';
         }
         
 
@@ -233,17 +281,17 @@
                             $languageID = $_POST['languageID'];
                             $name= $_POST['name'];
                             $numCasos = $_POST['CasosTesteNum'];
+                            $numFuncoes = $_POST['FuncoesProibidas'];
+
                             
                             /*Criação do Projeto*/
                             $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID');";
-        
+                            $db->exec($sql);
 
                             /*Ir buscar o último ID que foi inserido
                             ,ou seja, o ID do último projeto*/
                             $stmt = $db->query("SELECT LAST_INSERT_ID()");
                             $ProjetoID = $stmt->fetchColumn();
-
-                            ECHO "<br>Id do projeto: $ProjetoID<br>";
 
                             /* Inserir os valores de casos de teste */
                             for ($i = 0; $i < $numCasos; $i++) {
@@ -254,6 +302,14 @@
                                 $CasosTeste = $db->query($sql_Casos_Teste);
                             }
 
+
+                            /* Inserir os valores das funções proibidas */
+                            for ($i = 0; $i < $numFuncoes; $i++) {
+                                $funcaoP = $_POST['funcaoP' . $i . ''];
+                                
+                                $funcoes_nao_permitidas = "INSERT INTO funcoes_nao_permitidas (Funcao, ProjetoID) VALUES ('$funcaoP', '$ProjetoID');";
+                                $funcaoProibida = $db->query($funcoes_nao_permitidas);
+                            }
 
                             /*$SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output' AND Data_CasosTeste = '$todayDate'";                          
                             $CasosTesteID = $db->query($SQL_CasosTesteID);
@@ -275,7 +331,6 @@
 
                             
                             // use exec() because no results are returned
-                            $db->exec($sql);
                             echo "<br><br><br>Base de Dados atualizada";
                             die();
                         
