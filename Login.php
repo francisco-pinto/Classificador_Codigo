@@ -8,9 +8,9 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
+            echo "Conexão bem sucedida";
     } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
+        echo "Conexão falhada " . $e->getMessage();
     }
 
 
@@ -44,7 +44,7 @@
 	
    <body>
       
-      <h2>Enter Username and Password</h2> 
+      <h2>Introduz os teus dados</h2> 
       <div class = "container form-signin">
     
         <?php
@@ -73,18 +73,15 @@
                         $_SESSION['user_Username'] = $row['Username'];
                         $_SESSION['user_Name'] = $row['Nome'];
 
-                        $msg = "Login efetuado com sucesso";
                         header("Location: index.php");
                         die();
                         
                     } else {
-                        $msg = "Invalid username and password!";
+                        $msg = "Username e password inválidos";
                     }
                 } catch (PDOException $e) {
                     echo "Error : ".$e->getMessage();
                 }
-            } else {
-              $msg = "Both fields are required!";
             }
          ?>
 
@@ -95,12 +92,13 @@
             action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); 
             ?>" method = "post">
             <h4 class = "form-signin-heading"><?php echo $msg; ?></h4>
-            <input type = "text" class = "form-control" 
+            <input type = "username" class = "form-control" 
                name = "username" placeholder = "Username" 
                required autofocus></br>
             <input type = "password" class = "form-control"
                name = "password" placeholder = "Password" required>
-            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
+               <br>
+            <button class = "button" type = "login" 
                name = "login">Login</button>
          </form>
       </div> 

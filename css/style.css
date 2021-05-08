@@ -1,19 +1,15 @@
 
 body {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #122a46;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    background-image: url('Images/fundo.jpg');
 }
 
-.h2 {
-    color: pink;
-}
 
 .form-signin {
-    max-width: 330px;
-    padding: 15px;
+    max-width: max-content;
     margin: 0 auto;
-    color: #017572;
+    padding: 15px;
+    color: #ff0000;
 }
 
 .form-signin .form-signin-heading,
@@ -26,34 +22,42 @@ body {
 }
 
 .form-signin .form-control {
-    position: relative;
-    height: auto;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 10px;
+    padding: 15px;
     font-size: 16px;
+    border-radius: 25px;
+    outline: none;
 }
 
 .form-signin .form-control:focus {
     z-index: 2;
 }
 
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-color:#017572;
+.form-signin input{
+    margin-bottom: 5px;
+    border-color:#2a4b7c;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-color:#017572;
+.form-signin button[type="login"]
+{
+    margin-top: 5px;
+    margin-left: 70px;
 }
 
 h2{
     text-align: center;
-    color: #000000;
+    color: #ffffff;
+}
+
+.button
+{
+    background-color: #2a4b7c;
+    border-color: black;
+    color: white;
+    padding: 10px 25px;
+    font-size: 18px;
+    border-radius: 25px;
+    max-width: max-content;
+    margin: auto;
+    text-align: center;
+    cursor: pointer;
 }
