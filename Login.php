@@ -10,7 +10,7 @@
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "Conexão bem sucedida";
     } catch(PDOException $e) {
-        echo "Conexão falhada " . $e->getMessage();
+        echo "Conexão falhada: " . $e->getMessage();
     }
 
 

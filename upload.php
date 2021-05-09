@@ -21,9 +21,9 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
+            echo "Conexão bem sucedida";
     } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
+        echo "Conexão falhada: " . $e->getMessage();
     }
 ?>
 
@@ -38,7 +38,9 @@
     <body>
 
         <form action="" method="post" enctype="multipart/form-data">
-            <label for="Projeto">Escolher o projeto:</label><br>
+            <br>
+            <select id="' . $projeto['Id'] . '" name="projetoID">
+            <option> Selecione um projeto </option>
             <?php
                 $sql = "SELECT * FROM Projeto";
 
@@ -47,11 +49,13 @@
                 $q->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($projeto = $q->fetch()) {
-                    $linguagem_id = $projeto["LinguagemID"];
-                    echo '<input type="radio" id="' . $projeto['Id'] . '" name="projetoID" value="' . $projeto['Id'] . '">';
-                    echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
+                    $linguagem_id = $_POST["LinguagemID"];
+                    echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>'; //obviamente trocas o field_name
+                    // echo '<input type="radio" id="' . $projeto['Id'] . '" name="projetoID" value="' . $projeto['Id'] . '">';
+                    // echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
                 }
             ?>
+            </select>
             <br>
             <br>
             <br>
@@ -59,8 +63,9 @@
 
 
             Submeter um ficheiro:
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload File" name="submit">
+            <br>
+            <input class = "inputfile" type="file" name="fileToUpload" id="fileToUpload">
+            <input class = "button" type="submit" value="Submeter Ficheiro" name="submit">
         </form>
 
     </body>
