@@ -53,13 +53,15 @@
                         
                         $projetoID = $_POST['projeto'];
 
+                        echo "$projetoID";
+
                         /* Nome */
                         $query = $db->query(" SELECT Nome FROM projeto where Id='$projetoID' ");
                         $NomeProjeto = $query->fetchColumn();
 
 
                             
-                        echo "<form action='' method='post' enctype='multipart/form-data'>
+                        echo "<form action='' method='post' enctype='multipart/form-data' onsubmit='redirectEditarProjeto()'>
                         <label for='name'>Nome do Projeto:</label>
                         <input type='text' id='text' name='name' value='$NomeProjeto'><br><br><br><br>";
                         
@@ -245,6 +247,10 @@
 
 <script>
 
+    function redirectEditarProjeto(){
+        window.location.href = "/Projeto/EditarProjeto.php";
+    }
+
     function addFuncoesProibidas(){
        
         var numFuncoes = document.getElementById('TextFuncoesProibidas').value;
@@ -336,7 +342,6 @@
 </script>
 
 <?php
-
     /*Submissão na base de dados*/
     if(isset($_POST['submit_Total'])){
         if(!empty($_POST['languageID'])){
@@ -373,7 +378,12 @@
 
                             
                             /*Criação do Projeto*/
-                            $sql = "INSERT INTO Projeto (Nome, Data_Projeto, Data_Limite, LinguagemID) VALUES ('$name', '$Data_Inicio', '$Data_Fim', '$languageID');";
+                            $sql = "UPDATE Projeto SET 
+                                    Nome = '$name',
+                                    Data_Projeto = '$Data_Inicio',
+                                    Data_Limite = '$Data_Fim',
+                                    LinguagemID = '$languageID'";
+
                             $db->exec($sql);
 
                             /*Ir buscar o último ID que foi inserido
@@ -407,9 +417,9 @@
                             /*echo "<br> Casos de Teste ID: $CasosTesteID <br>";
                             echo "Begin Date: $Data_Inicio <br>";
                             echo "End Date: $Data_Fim <br>";
-                            echo "Language ID: $languageID <br>";   */                         
+                            echo "Language ID: $languageID <br>";                           
 
-                            /*$Begin_Date = str_replace('/', '-', $Begin_Date);
+                            $Begin_Date = str_replace('/', '-', $Begin_Date);
                             $End_Date = str_replace('/', '-', $End_Date);
 
                             $Data_Inicio = strtotime($Begin_Date);

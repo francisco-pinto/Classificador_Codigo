@@ -128,7 +128,7 @@
 
             <!-- Funções que são proibídas no projeto -->
             <div class="FuncoesProibidasClass">
-                <label>Nomes das funções proibidas a utilizar: </label>
+                <label>Número de funções proibidas a utilizar: </label>
                 <input type="text" id="TextFuncoesProibidas" name="FuncoesProibidas"><br><br>
                 <input type="button" value="Inserir" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
             </div>
