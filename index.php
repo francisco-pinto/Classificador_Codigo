@@ -16,12 +16,38 @@
    
    <head>
       <title>Index</title>
-      <link rel="stylesheet" href="css/style.css">      
+      <link rel="stylesheet" href="css/style.css">
    </head>
-	
+
    <body>
-      <h2>Página Index</h2>  
-      
+
+   <header id="header">
+        <div class="container">
+
+            <div class="logo float-left">
+                <a href="index.php">
+                    <img src="Images/logoutad.png"  alt = "logoutad"/>
+                </a> 
+            </div>
+
+            <nav class="main-nav float-right d-none d-lg-block">
+                <ul>
+                <li><h2>Página Index</h2></li>
+                    <!-- Se for aluno -->
+                    <li><a href="upload.php">Upload</a></li>
+                    <li><a href="notas.php">Classificações</a></li>
+                    <!-- Se for prof -->
+                    <li><a href="projeto.php">Novo Projeto</a></li>
+                    <li><a href="EditarProjeto.php">Editar Projeto</a></li>
+                <li>
+                    <form method="post">
+                    <button class = "button" type = "logout" name = "button_logout">Logout</button>
+                    </form>  
+                </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
       <?php
         if(array_key_exists('button_logout', $_POST)) {
             button1();
@@ -32,10 +58,5 @@
             die();
         }
     ?>
-
-      <form method="post">
-        <input type="submit" name="button_logout"
-                class="button" value="Logout" />
-    </form>    
    </body>
 </html>

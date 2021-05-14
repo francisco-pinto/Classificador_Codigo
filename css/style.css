@@ -1,7 +1,61 @@
-
 :root{
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     background-image: url('Images/background-azul-claro.jpg');
+}
+
+#header{
+    height: 110px;
+    transition: all 0.5s;
+    z-index: 997;
+    transition: all 0.5s;
+    padding: 20px 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    transition: all 0.5s;
+    z-index: 997;
+}
+
+img
+{
+    position: absolute;
+    top: 150px;
+}
+
+.main-nav > ul > li{
+    position: relative;
+    white-space: nowrap;
+    float: left;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+.main-nav, .main-nav *
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.container{
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.main-nav{
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .form-signin {
@@ -61,6 +115,7 @@ h2{
     text-align: center;
     cursor: pointer;
 }
+
 
 select {
     position: absolute;
