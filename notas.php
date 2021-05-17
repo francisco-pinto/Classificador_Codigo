@@ -3,6 +3,17 @@
     ob_start();
     session_start();
 
+    //Verificação de professor ou aluno
+    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1) 
+    {
+        echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
+    }else 
+    {
+        header("Location: login.php");
+        die(); //pega
+    }
+
+
     $servername = "localhost";
     $username = "root";         //Default credencials wamp
     $password = "";
