@@ -67,10 +67,6 @@
                 <input type="submit" value="Submeter" name="submit_Projeto">
             </form>
         </div>
-
    </body>
 </html>
 
-<script>
-
-</script>
