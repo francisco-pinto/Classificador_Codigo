@@ -3,60 +3,38 @@
     background-image: url('Images/background-azul-claro.jpg');
 }
 
-#header{
-    height: 110px;
-    transition: all 0.5s;
-    z-index: 997;
-    transition: all 0.5s;
-    padding: 20px 0;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    transition: all 0.5s;
-    z-index: 997;
+body{
+    margin: 0;
 }
 
-img
-{
-    position: absolute;
-    top: 150px;
-}
-
-.main-nav > ul > li{
-    position: relative;
-    white-space: nowrap;
+.topnav {
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+  }
+  
+  .topnav a {
+    margin: 1%;
+    margin-right: 10;
+    float: right;
+    color: #000000;
+    text-align: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .topnav a:hover {
+    text-shadow: 0px 0px 1px #2a4b7c;
+  }
+  
+  .topnav a.active {
+    text-shadow: 0px 0px 1px #1c437e;
+  }
+  .topnav a.logo {
     float: left;
-}
-
-li {
-    display: list-item;
-    text-align: -webkit-match-parent;
-}
-
-ul {
-    list-style-type: disc;
-}
-
-.main-nav, .main-nav *
-{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.container{
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.main-nav{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
+    margin-left: 50px;
+  }
 
 .form-signin {
     max-width: max-content;
@@ -97,7 +75,7 @@ ul {
 }
 
 h2{
-    text-align: center;
+    text-align:center;
     color: #000000;
 }
 
@@ -105,17 +83,17 @@ h2{
 {
     display:inline-block;
     background-color: #2a4b7c;
-    border-color: black;
     color: white;
     padding: 10px 25px;
     font-size: 18px;
     border: 1px solid black;
-    max-width: max-content;
-    margin: auto;
-    text-align: center;
     cursor: pointer;
 }
 
+/* .button[type=logout]
+{
+    
+} */
 
 select {
     position: absolute;

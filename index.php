@@ -1,6 +1,35 @@
-<?php
-   ob_start();
-   session_start();
+<html lang = "pt">
+   
+   <head>
+      <title>Index</title>
+      <link rel="stylesheet" href="css/style.css">
+   </head>
+
+    <div class="topnav">
+
+        <a class="logo"><img src="logoutad.jpg" alt = "logoutad"></a>
+
+        <a class="logout" ><form method="post">
+        <button class = "button" type = "logout" name = "button_logout">Logout</button>
+        </form></a>
+
+        <?php
+           ob_start();
+           session_start();
+
+        if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1)
+        {
+            echo "<a href='notas.php'>Classificações</a>";
+            echo "<a href='upload.php'>Upload</a>";
+        }else if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2)
+        {
+            echo "<a href='EditarProjeto.php'>Editar Projeto</a>";
+            echo "<a href='projeto.php'>Novo Projeto</a>";
+        }
+        ?>
+        <a class="active"  href="index.php">Home</a>
+    </div>
+    <?php
 
     if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
     {
@@ -10,45 +39,7 @@
         header("Location: login.php");
         die(); //pega
     }
-?>
-            
-<html lang = "pt">
-   
-   <head>
-      <title>Index</title>
-      <link rel="stylesheet" href="css/style.css">
-   </head>
 
-   <body>
-
-   <header id="header">
-        <div class="container">
-
-            <div class="logo float-left">
-                <a href="index.php">
-                    <img src="Images/logoutad.png"  alt = "logoutad"/>
-                </a> 
-            </div>
-
-            <nav class="main-nav float-right d-none d-lg-block">
-                <ul>
-                <li><h2>Página Index</h2></li>
-                    <!-- Se for aluno -->
-                    <li><a href="upload.php">Upload</a></li>
-                    <li><a href="notas.php">Classificações</a></li>
-                    <!-- Se for prof -->
-                    <li><a href="projeto.php">Novo Projeto</a></li>
-                    <li><a href="EditarProjeto.php">Editar Projeto</a></li>
-                <li>
-                    <form method="post">
-                    <button class = "button" type = "logout" name = "button_logout">Logout</button>
-                    </form>  
-                </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-      <?php
         if(array_key_exists('button_logout', $_POST)) {
             button1();
         }
