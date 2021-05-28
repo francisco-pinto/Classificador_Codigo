@@ -99,7 +99,7 @@
                         echo "<div class='NumCasosTeste'>
                             <label for='CasosTeste'>Números de Casos Teste (Min: 1 | Máx: 8) : </label>
                             <input type='text' id='textCasosTeste' name='CasosTesteNum' value='$numCasosTeste'><br><br>
-                            <input type='button' value='Inserir' id='textCasosTeste_Button' name='submit_Casos' onclick='addCasosTeste()'>
+                            <input type='button' value='Inserir' id='textCasosTeste_Button' name='submit_Casos'>
                         </div>";
                         
 
@@ -221,7 +221,7 @@
                         echo "<div class='FuncoesProibidasClass'>
                             <label>Nomes das funções proibidas a utilizar: </label>
                             <input type='text' id='TextFuncoesProibidas' name='FuncoesProibidas' value='$numFuncoesProibidas'><br><br>
-                            <input type='button' value='Inserir' id='FuncoesProibidas_Button' name='submit_FuncoesProibidas' onclick='addFuncoesProibidas()'>
+                            <input type='button' value='Inserir' id='FuncoesProibidas_Button' name='submit_FuncoesProibidas'>
                         </div>";
             
                         echo "<!-- Funções proibídas -->
@@ -388,6 +388,7 @@
                             $name= $_POST['name'];
                             $numCasos = $_POST['CasosTesteNum'];
                             $numFuncoes = $_POST['FuncoesProibidas'];
+                            $ProjetoID = $_SESSION['projeto'];
 
                             
                             /*Criação do Projeto*/
@@ -395,14 +396,15 @@
                                     Nome = '$name',
                                     Data_Projeto = '$Data_Inicio',
                                     Data_Limite = '$Data_Fim',
-                                    LinguagemID = '$languageID'";
+                                    LinguagemID = '$languageID'
+                                    WHERE Id= '$ProjetoID'";
 
                             $db->exec($sql);
 
-                            /*Ir buscar o último ID que foi inserido
-                            ,ou seja, o ID do último projeto*/
-                            $stmt = $db->query("SELECT LAST_INSERT_ID()");
-                            $ProjetoID = $stmt->fetchColumn();
+                            /* Eliminar casos teste */
+                            $Delete_Casos_Teste_SQL = "DELETE from casos_teste where ProjetoID= '$ProjetoID'";
+                            $db->exec($Delete_Casos_Teste_SQL);
+
 
                             /* Inserir os valores de casos de teste */
                             for ($i = 0; $i < $numCasos; $i++) {
@@ -414,6 +416,10 @@
                             }
 
 
+                            /* Eliminar Funções Proibídas */
+                            $Delete_Funcoes_Proibidas_SQL = "DELETE from funcoes_nao_permitidas where ProjetoID= '$ProjetoID'";
+                            $db->exec($Delete_Funcoes_Proibidas_SQL);
+
                             /* Inserir os valores das funções proibidas */
                             for ($i = 0; $i < $numFuncoes; $i++) {
                                 $funcaoP = $_POST['funcaoP' . $i . ''];
@@ -422,27 +428,12 @@
                                 $funcaoProibida = $db->query($funcoes_nao_permitidas);
                             }
 
-                            /*$SQL_CasosTesteID = "SELECT Id FROM Casos_Teste WHERE Input = '$input' and Output = '$output' AND Data_CasosTeste = '$todayDate'";                          
-                            $CasosTesteID = $db->query($SQL_CasosTesteID);
-                            $CasosTesteID = $CasosTesteID->fetch(PDO::FETCH_ASSOC);*/
-                            //Responsável pelo retorno do valor
-
-                            /*echo "<br> Casos de Teste ID: $CasosTesteID <br>";
-                            echo "Begin Date: $Data_Inicio <br>";
-                            echo "End Date: $Data_Fim <br>";
-                            echo "Language ID: $languageID <br>";                           
-
-                            $Begin_Date = str_replace('/', '-', $Begin_Date);
-                            $End_Date = str_replace('/', '-', $End_Date);
-
-                            $Data_Inicio = strtotime($Begin_Date);
-                            $Data_Fim = strtotime($End_Date);*/
-                            /*$Begin_DateTimestamp = date('Y-m-d H:i:s', strtotime($Begin_Date));  
-                            $End_DateTimestamp = date('Y-m-d H:i:s', strtotime($End_Date));  */
-
+                            unset($_SESSION['projeto']);
                             
                             // use exec() because no results are returned
                             echo "<br><br><br>Base de Dados atualizada";
+                            header("Location: EditarProjeto.php");
+
                             die();
                         
                         }else{

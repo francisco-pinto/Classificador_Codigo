@@ -7,9 +7,9 @@
 
     <div class="topnav">
 
-        <a class="logo"><img src="logoutad.jpg" alt = "logoutad"></a>
+        <a class="logo"><img src="css\Images\logoutad.png" width="200" height="66.2" alt = "logoutad"></a>
 
-        <a class="logout" ><form method="post">
+        <a class="logout funcionalidade" ><form method="post">
         <button class = "button" type = "logout" name = "button_logout">Logout</button>
         </form></a>
 
@@ -19,15 +19,15 @@
 
         if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1)
         {
-            echo "<a href='notas.php'>Classificações</a>";
-            echo "<a href='upload.php'>Upload</a>";
+            echo "<a class='funcionalidade' href='notas.php'>Classificações</a>";
+            echo "<a class='funcionalidade' href='upload.php'>Upload</a>";
         }else if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2)
         {
-            echo "<a href='EditarProjeto.php'>Editar Projeto</a>";
-            echo "<a href='projeto.php'>Novo Projeto</a>";
+            echo "<a class='funcionalidade' href='EditarProjeto.php'>Editar Projeto</a>";
+            echo "<a class='funcionalidade' href='projeto.php'>Novo Projeto</a>";
         }
         ?>
-        <a class="active"  href="index.php">Home</a>
+        <a class="active funcionalidade"  href="index.php">Home</a>
     </div>
     <?php
 
