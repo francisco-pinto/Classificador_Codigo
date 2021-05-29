@@ -50,7 +50,12 @@
 
                 while ($projeto = $q->fetch()) {
                     $linguagem_id = $_POST["LinguagemID"];
-                    echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>'; //obviamente trocas o field_name
+                    
+                    if($projeto['Data_Projeto'] >= date("Y-m-d H:i:s")){
+                        echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>'; 
+                    }
+
+                    //obviamente trocas o field_name
                     // echo '<input type="radio" id="' . $projeto['Id'] . '" name="projetoID" value="' . $projeto['Id'] . '">';
                     // echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
                 }
@@ -65,6 +70,12 @@
             Submeter um ficheiro:
             <br>
             <input class = "inputfile" type="file" name="fileToUpload" id="fileToUpload">
+
+            <br><br>
+            Nome do ficheiro Principal:
+            <br>
+            <input class = "inputfile" type="text" name="Filename" id="Filename">
+            <br>
             <input class = "button" type="submit" value="Submeter Ficheiro" name="submit">
         </form>
 
@@ -83,6 +94,7 @@ if(isset($_POST['submit'])){
         $filePath=$_FILES["fileToUpload"]["tmp_name"];
         $todayDate = date("Y-m-d H:i:s");
         $projeto_id = $_POST["projetoID"];
+        $MainFile = $_POST["Filename"];
         
 
 
@@ -138,7 +150,7 @@ if(isset($_POST['submit'])){
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
               
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID, LinguagemID) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id', '$linguagem_id');";
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID, MainFile) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id', '$MainFile');";
 
             // use exec() because no results are returned
             $db->exec($sql);
