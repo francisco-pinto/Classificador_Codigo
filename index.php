@@ -1,7 +1,7 @@
 <html lang = "pt">
    
    <head>
-      <title>Index</title>
+      <title>Home Page</title>
       <link rel="stylesheet" href="css/style.css">
    </head>
 
