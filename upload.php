@@ -2,10 +2,7 @@
    ob_start();
    session_start();
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1) 
-    {
-        echo "Welcome to the Upload's area, " . $_SESSION['user_Username'] . "!";
-    }else 
+    if (!isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1) 
     {
         header("Location: login.php");
         die(); //pega
@@ -21,15 +18,12 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Conexão bem sucedida";
     } catch(PDOException $e) {
         echo "Conexão falhada: " . $e->getMessage();
     }
 ?>
 
-<!DOCTYPE html>
-<html>
-
+<html lang = "pt">
     <head>
         <title>Upload</title>   
         <link rel="stylesheet" href="css/style.css">      
@@ -37,6 +31,18 @@
 
     <body>
 
+    <div class="topnav">
+
+        <a class="logo" href="index.php"><img src="css\Images\logoutad.png" alt = "logoutad"></a>
+
+        <a class="logout funcionalidade" ><form method="post">
+        <button class = "button" type = "logout" name = "button_logout">Logout</button>
+        </form></a>
+        <a class=funcionalidade href=notas.php>Classificações</a>
+        <a class="active funcionalidade"  href="index.php">Home</a>
+    </div>
+
+    <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
             <br>
             <select id="' . $projeto['Id'] . '" name="projetoID">
@@ -54,10 +60,6 @@
                     if($projeto['Data_Projeto'] >= date("Y-m-d H:i:s")){
                         echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>'; 
                     }
-
-                    //obviamente trocas o field_name
-                    // echo '<input type="radio" id="' . $projeto['Id'] . '" name="projetoID" value="' . $projeto['Id'] . '">';
-                    // echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
                 }
             ?>
             </select>
@@ -78,7 +80,7 @@
             <br>
             <input class = "button" type="submit" value="Submeter Ficheiro" name="submit">
         </form>
-
+        </div>
     </body>
 </html>
 
@@ -166,6 +168,15 @@ if(isset($_POST['submit'])){
     else{
         echo "Escolha um dos projetos";
     }
+}
+
+if(array_key_exists('button_logout', $_POST)) {
+    button1();
+}
+function button1() {
+    session_destroy();
+    header("Location: login.php");
+    die();
 }
 
 ?>

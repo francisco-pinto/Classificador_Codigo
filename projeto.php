@@ -4,10 +4,7 @@
 
    //Verificação de professor ou aluno
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2) 
-    {
-        echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
-    }else 
+    if (!isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2)
     {
         header("Location: login.php");
         die(); //pega
@@ -23,7 +20,6 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
@@ -53,7 +49,20 @@
    </head>
 	
    <body>
-      
+    <div class="topnav">
+        <a class="logo" href="index.php"><img src="css\Images\logoutad.png" alt = "logoutad"></a>
+
+        <a class="logout funcionalidade" ><form method="post">
+        <button class = "button" type = "logout" name = "button_logout">Logout</button>
+        </form></a>
+
+        <a class="funcionalidade" href="EditarProjeto.php">Editar Projeto</a>
+    
+        <a class="active funcionalidade"  href="index.php">Home</a>
+    </div>
+
+
+    <div class="container">
         <h2>Criação de Projeto</h2>  
         
         <h3>Insira os critérios de avaliação</h3>
@@ -148,7 +157,7 @@
             <input type="submit" value="Submeter" name="submit_Total">
         </form>
 
-
+        </div>
    </body>
 </html>
 

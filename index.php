@@ -7,7 +7,7 @@
 
     <div class="topnav">
 
-        <a class="logo"><img src="css\Images\logoutad.png" width="200" height="66.2" alt = "logoutad"></a>
+        <a class="logo" href="index.php"><img src="css\Images\logoutad.png" alt = "logoutad"></a>
 
         <a class="logout funcionalidade" ><form method="post">
         <button class = "button" type = "logout" name = "button_logout">Logout</button>
@@ -29,12 +29,14 @@
         ?>
         <a class="active funcionalidade"  href="index.php">Home</a>
     </div>
+
+
+    
     <?php
 
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
-    {
-        echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
-    }else 
+    echo "<h2> Bem-Vindo, " . $_SESSION['user_Username'] . "! </h2>";
+
+    if (!isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
     {
         header("Location: login.php");
         die(); //pega

@@ -1,18 +1,19 @@
-<?php
+<html lang = "pt">
+    <head>
+        <title>Notas</title>
+        <link rel="stylesheet" href="css/style.css">      
+    </head>
 
+    <?php
     ob_start();
     session_start();
 
     //Verificação de professor ou aluno
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1) 
-    {
-        echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
-    }else 
+    if (!isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1)
     {
         header("Location: login.php");
         die(); //pega
     }
-
 
     $servername = "localhost";
     $username = "root";         //Default credencials wamp
@@ -22,40 +23,33 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
-
-
-    if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name'])) 
-    {
-        echo "Welcome to the Classification's area, " . $_SESSION['user_Username'] . "!";
-    }else 
-    {
-        header("Location: login.php");
-        die();
-    }
-?>
-
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Notas</title>
-        <link rel="stylesheet" href="css/style.css">      
-    </head>
+    ?>
 
     <body>
+    <div class="topnav">
+        <a class="logo" href="index.php"><img src="css\Images\logoutad.png" alt = "logoutad"></a>
+
+        <a class="logout funcionalidade" ><form method="post">
+        <button class = "button" type = "logout" name = "button_logout">Logout</button>
+        </form></a>
+
+        <a class=funcionalidade href=upload.php>Upload</a>
+        <a class="active funcionalidade"  href="index.php">Home</a>
+    </div>
+
     <?php
     $query = $db->query('SELECT Nome, nota1.Classificacao FROM Utilizador m JOIN Nota nota1 ON m.NotaID = nota1.Id'); //pega
     ?>
 
+    <div class="container">
     <table>
 			<thead>
 				<tr>
-					<th>Utilizador</th>
-					<th>Classificação</th>
+					<th width= "15%">Utilizador</th>
+					<th width= "5%">Classificação</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -69,6 +63,18 @@
             ?>
 			</tbody>
 		</table>
+    </div>
+
+    <?php
+        if(array_key_exists('button_logout', $_POST)) {
+            button1();
+        }
+        function button1() {
+            session_destroy();
+            header("Location: login.php");
+            die();
+        }
+    ?>
 
     </body>
 </html>
