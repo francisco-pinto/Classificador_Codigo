@@ -23,6 +23,15 @@
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
+
+    if(array_key_exists('button_logout', $_POST)) {
+        button1();
+    }
+    function button1() {
+        session_destroy();
+        header("Location: login.php");
+        die();
+    }
 ?>
 
          
@@ -58,7 +67,8 @@
         
         <div id="EscolhaProjeto">
             <form action="/Projeto/ConfiguracaoProjeto.php" method="post" enctype="multipart/form-data">
-                <label for="Projeto">Escolha o projeto:</label><br>
+            <select id="' . $projeto['Id'] . '" name="projetoID">
+            <option> Selecione um projeto </option>
                 <?php
                     $sql = "SELECT * FROM Projeto";
 
@@ -68,12 +78,12 @@
 
                     while ($projeto = $q->fetch()) {
                         $linguagem_id = $projeto["LinguagemID"];
-                        echo '<input type="radio" id="' . $projeto['Id'] . '" name="projeto" value="' . $projeto['Id'] . '">';
-                        echo '<label for="' . $projeto['Id'] . '">' . $projeto['Nome'] . '</label><br>'; 
+                        echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>';
                     }
                 ?>
-
-                <input type="submit" value="Submeter" name="submit_Projeto">
+            </select>
+            <br><br>
+            <input class = "button" type="submit" value="Editar Projeto" name="submit">
             </form>
         </div>
     </div>

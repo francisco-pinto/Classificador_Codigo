@@ -57,7 +57,7 @@
                 while ($projeto = $q->fetch()) {
                     $linguagem_id = $_POST["LinguagemID"];
                     
-                    if($projeto['Data_Projeto'] >= date("Y-m-d H:i:s")){
+                    if($projeto['Data_Limite'] >= date("Y-m-d H:i:s")){
                         echo '<option value="'.$projeto['Id'] .'" >' . $projeto['Nome'] . '</option>'; 
                     }
                 }

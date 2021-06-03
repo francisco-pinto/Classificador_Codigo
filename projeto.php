@@ -64,26 +64,72 @@
 
     <div class="container">
         <h2>Criação de Projeto</h2>  
-        
-        <h3>Insira os critérios de avaliação</h3>
-                
-
 
         <!-- Quantos input e output iremos ter? Fazer dinamicamente casos de teste -->
         <form action="" method="post" enctype="multipart/form-data">
             <label for="name">Nome do Projeto:</label>
-            <input type="text" id="text" name="name"><br><br><br><br>
+            <input class = "inputfile" type="text" name="name" id="text"><br><br><br>
+            <!-- <input type="text" id="text" name="name"> -->
+
+
+            <!-- Escolha da linguagem de programação -->
+            <select id="' . $linguagens['Id'] . '" name="languageID">
+            <option> Linguagem do projeto </option><br>
+            <!-- <label for="Linguagens">Escolher a linguagem:</label><br> -->
+            <?php
+                $sql = "SELECT * FROM Linguagem";
+
+                $q = $db->prepare($sql);
+                $q->execute();
+                $q->setFetchMode(PDO::FETCH_ASSOC);
+
+                while ($linguagens = $q->fetch()) {
+                    // echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" value="' . $linguagens['Id'] . '">';
+                    // echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
+                    echo '<option value="'.$linguagens['Id'] .'" >' . $linguagens['Linguagem'] . '</option>';
+                }
+            ?>
+            </select>
+
+            <br>
+            <br>
+            <br>
+            <br>   
+
+
+<!-- Data de início e data de fim do projeto -->
+<p>Data de início de Projeto: <input class = "inputfile" type="text" id="datepicker" name="Begin_Date"></p>
+            <p>Data de Fim de Projeto: <input class = "inputfile" type="text" id="datepicker2" name="End_Date"></p>
+
+            <br>
+            <br>    
 
             <!-- Número de casos de teste que pretende -->
             <div class="NumCasosTeste">
                 <label for="CasosTeste">Números de Casos Teste (Min: 1 | Máx: 8) : </label>
-                <input type="text" id="textCasosTeste" name="CasosTesteNum"><br><br>
-                <input type="button" value="Inserir" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
+                <input class = "inputfile" type="text" name="CasosTesteNum" id="textCasosTeste"><br><br>
+                <!-- <input type="text" id="textCasosTeste" name="CasosTesteNum"> -->
+                <input class = "button" type="button" value="Inserir" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
             </div>
 
             <!-- Casos Teste -->
             <div id="DisplayCasosTeste" class="CasosTeste" >
-                
+
+        <!-- <table>
+			<thead>
+				<tr>
+					<th width= "5%">Inputs</th>
+					<th width= "5%">Outputs</th>
+				</tr>
+			</thead>
+			<tbody>
+                <tr>
+                    <td><div id="InputDiv"></div></td>
+                    <td><div id="OutputDiv"></div></td>
+                </tr>
+			</tbody>
+		</table> -->
+
                 <h3>Inputs</h3>
 
                 <div id="InputDiv" >
@@ -107,39 +153,13 @@
             <br>
             <br>
     
-            <!-- Escolha da linguagem de programação -->
-            <label for="Linguagens">Escolher a linguagem:</label><br>
-            <?php
-                $sql = "SELECT * FROM Linguagem";
-
-                $q = $db->prepare($sql);
-                $q->execute();
-                $q->setFetchMode(PDO::FETCH_ASSOC);
-
-                while ($linguagens = $q->fetch()) {
-                    echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" value="' . $linguagens['Id'] . '">';
-                    echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
-                }
-            ?>
-            <br>
-            <br>
-            <br>
-            <br>     
-
-
-            <!-- Data de início e data de fim do projeto -->
-            <p>Data de início de Projeto: <input type="text" id="datepicker" name="Begin_Date"></p>
-            <br><br>
-            <p>Data de Fim de Projeto: <input type="text" id="datepicker2" name="End_Date"></p>
-
-            <br>
-            <br>    
+        
 
             <!-- Funções que são proibídas no projeto -->
             <div class="FuncoesProibidasClass">
                 <label>Número de funções proibidas a utilizar: </label>
-                <input type="text" id="TextFuncoesProibidas" name="FuncoesProibidas"><br><br>
-                <input type="button" value="Inserir" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
+                <input class = "inputfile" type="text" id="TextFuncoesProibidas" name="FuncoesProibidas"><br><br>
+                <input class = "button" type="button" value="Inserir" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
             </div>
 
             <!-- Funções proibídas -->
@@ -154,7 +174,7 @@
             <br>
             <br>    
 
-            <input type="submit" value="Submeter" name="submit_Total">
+            <input class = "button" type="submit" value="Submeter" name="submit_Total">
         </form>
 
         </div>
@@ -201,17 +221,16 @@
             for(var i = 0; i < numCasos; i++){
                 var name = "input" + i;
 
-                //Create an input type dynamically.   
+                //Create an input type dynamically.  
+                
                 var elementInput = document.createElement("input");
                 //Assign different attributes to the element. 
                 elementInput.type = text;
                 elementInput.value = " ";
                 elementInput.name = name; 
-
+                
                 inputDiv.appendChild(elementInput);
                 inputDiv.appendChild(tabspace);
-
-
             }
 
             for(var i = 0; i < numCasos; i++){
@@ -358,6 +377,15 @@
         }else{
             echo "Preencha os dados todos!";
         }
+    }
+
+    if(array_key_exists('button_logout', $_POST)) {
+        button1();
+    }
+    function button1() {
+        session_destroy();
+        header("Location: login.php");
+        die();
     }
 
 ?>
