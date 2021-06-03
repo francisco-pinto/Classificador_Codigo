@@ -96,9 +96,8 @@ if(isset($_POST['submit'])){
         $filePath=$_FILES["fileToUpload"]["tmp_name"];
         $todayDate = date("Y-m-d H:i:s");
         $projeto_id = $_POST["projetoID"];
-        $MainFile = $_POST["Filename"];
+        // $MainFile = $_POST["Filename"];
         
-
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
@@ -108,7 +107,7 @@ if(isset($_POST['submit'])){
         
         if ($ext!="")
         {
-            if ($ext = 'rar' || $ext = 'zip')
+            if ($ext == 'rar' || $ext == 'zip')
             {
                 if ($_FILES["fileToUpload"]["error"] > 0)
                 {
@@ -134,7 +133,10 @@ if(isset($_POST['submit'])){
                         die();
                     } 
                 }
-            }
+            }else{
+                echo "Escolha um ficheiro rar ou zip";
+                die();
+            }   
         }else{
             echo "Escolha um ficheiro";
             die();
@@ -152,7 +154,7 @@ if(isset($_POST['submit'])){
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
               
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID, MainFile) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id', '$MainFile');";
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id');";
 
             // use exec() because no results are returned
             $db->exec($sql);
