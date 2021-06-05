@@ -87,8 +87,8 @@
 
 <?php
 if(isset($_POST['submit'])){
-    if(!empty($_POST['projetoID'])){
-
+    if(!empty($_POST['projetoID']) && $_POST['projetoID'] != "Selecione um projeto"){
+              
         /*Upload do ficheiro*/
         $user_id =  $_SESSION['user_Id'];  
         $filename= time() . "_" .$_FILES["fileToUpload"]["name"];
@@ -96,8 +96,7 @@ if(isset($_POST['submit'])){
         $filePath=$_FILES["fileToUpload"]["tmp_name"];
         $todayDate = date("Y-m-d H:i:s");
         $projeto_id = $_POST["projetoID"];
-        // $MainFile = $_POST["Filename"];
-        
+        $MainFile = $_POST["Filename"];
 
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
@@ -144,6 +143,7 @@ if(isset($_POST['submit'])){
 
 
     /*Introdução dos dados na BD*/
+
         $servername = "localhost";
         $username = "root";         //Default credencials wamp
         $password = "";
@@ -153,8 +153,8 @@ if(isset($_POST['submit'])){
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "Connected successfully";
-              
-            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id');";
+            
+            $sql = "INSERT INTO ficheiro (Nome, Tamanho, Tipo_Ficheiro, Destino, Data_Upload, UtilizadorID, ProjetoID, MainFile) VALUES ('$filename', '$fileSize', '$fileType', '$filePath', '$todayDate', '$user_id', '$projeto_id', '$MainFile');";
 
             // use exec() because no results are returned
             $db->exec($sql);
@@ -165,7 +165,6 @@ if(isset($_POST['submit'])){
         } catch(PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
         }
-    
     }    
     else{
         echo "Escolha um dos projetos";
