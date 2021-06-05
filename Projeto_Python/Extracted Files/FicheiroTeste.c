@@ -3,5 +3,5 @@
 
 int soma (int j){
 
-    return 3 + j;
+    return j + 2;
 }
