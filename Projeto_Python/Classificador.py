@@ -41,6 +41,9 @@ filesPath = uploadURL
 #é sempre corrigido o primeiro ficheiro
 #das pastas zipadas e depois é retirado
 #destas e colocado o ficheiro final noutra pasta
+
+
+
 while True: 
     #Get file names
     files = []
@@ -86,13 +89,15 @@ while True:
     #Extract the file
     fileToExtract = filesPath + "/" + files[0]
     
-    # #Check if file exist to overwrite
-    # if os.path.exists(ExtractedFilesURL):
-    #     os.remove(ExtractedFilesURL)
-        
-    
     #Extract file
-    #patoolib.extract_archive(fileToExtract, outdir=ExtractedFilesURL) 
+    try:
+        patoolib.extract_archive(fileToExtract, outdir=ExtractedFilesURL) 
+    except:
+        #Means that a file already exists there 
+        if os.path.exists(ExtractedFilesURL):
+            os.remove(ExtractedFilesURL)
+
+        
     
     #Get Extracted file names
     ExtractedFiles = []
@@ -103,25 +108,23 @@ while True:
     print("\n\n", ExtractedFiles)
     
     
+        
+
+        
+    
     
     # #Execute the file
     fileToExecute = ExtractedFilesURL + "/" + ExtractedFiles[0];
     
     print("Path do ficheiro a executar: ", fileToExecute)
     
-
+    
 
 
 
 
 
 #Problema atual. Não conseguimos executar o ficheiro .C
-
-
-
-
-
-
 
 
     # my_functions = CDLL(fileToExecute)
