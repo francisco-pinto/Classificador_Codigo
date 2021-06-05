@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int soma (int j){
+int soma (){
 
-    return j + 2;
+    return 2 + 2;
 }

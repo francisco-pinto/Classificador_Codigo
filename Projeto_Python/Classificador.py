@@ -125,7 +125,8 @@ while True:
 
 
 #Problema atual. Não conseguimos executar o ficheiro .C
-
+    subprocess.call(["gcc", fileToExecute], shell=True)
+    subprocess.call("./a.out", shell=True)
 
     # my_functions = CDLL(fileToExecute)
     
