@@ -12,7 +12,7 @@ from ctypes import *
 import subprocess
 
 uploadURL = "C:/wamp64/www/Projeto/Uploads"
-ExtractedFilesURL = "C:/wamp64/www/Projeto/Projeto_Python/Extracted Files"
+ExtractedFilesURL = "C:/wamp64/www/Projeto/Projeto_Python/Extracted_Files"
 
 
 servername = "127.0.0.1"
@@ -67,11 +67,11 @@ while True:
     
     #Get Casos_Teste
     cur.execute("SELECT Output FROM casos_teste where ProjetoID=%s", (projectID, ))
-    Ouputs = []
+    Outputs = []
     for row in cur.fetchall():
-        Ouputs.extend(row)
+        Outputs.extend(row)
     
-    #print("\n\nOutputs: ", Ouputs)
+    #print("\n\nOutputs: ", Outputs)
         
     cur.execute("SELECT Input FROM casos_teste where ProjetoID=%s", (projectID, ))
     Inputs = []
@@ -107,28 +107,51 @@ while True:
     
     print("\n\n", ExtractedFiles)
     
-    
-        
-
-        
-    
-    
-    # #Execute the file
+        # #Execute the file
     fileToExecute = ExtractedFilesURL + "/" + ExtractedFiles[0];
+    phpURL = "C:\\wamp64\\bin\\php\\php7.4.9\\php.exe"
+    #print("Path do ficheiro a executar: ", fileToExecute)
+        
+    #Input = [1, 2]
+    #Get the results
+    OutputsObtidos = []
+    for row in Inputs:
+        proc = subprocess.Popen([phpURL, fileToExecute, " " + str(row)], shell=True, stdout=subprocess.PIPE)
+        output = proc.stdout.read()
+        OutputsObtidos.extend(output)
+        print(output)
+
     
-    print("Path do ficheiro a executar: ", fileToExecute)
+    #Convert from ascii to string
+    OutputsObtidosFinais = ''.join(chr(i) for i in OutputsObtidos)
+    #print((OutputsObtidosFinais[0]))
+    
+    #Compare the results
+    numOutputsTotais = len(OutputsObtidosFinais)
+    correctOutputs = 0
+    index = 0
+    
+    #Output = [3, 4]
+    for row in OutputsObtidosFinais:
+        print("\rOutput esperado" + str(Outputs[index]))
+        print("\rOutput Obtido" + str(row))
+        if(str(Outputs[index]) == str(row)):
+            correctOutputs+=1
+        
+        index+=1
+
+
+    #Get grade
+    gradePerQuestion = 20/index
+    finalGrade = gradePerQuestion*correctOutputs
+    
+    print("A sua nota é: " + str(finalGrade))
+        
     
     
+   
+    #Execute php file
 
-
-
-
-
-#Problema atual. Não conseguimos executar o ficheiro .C
-    subprocess.call(["gcc", fileToExecute], shell=True)
-    subprocess.call("./a.out", shell=True)
-
-    # my_functions = CDLL(fileToExecute)
     
-    # print(type(my_functions))
-    # print(my_functions.square(2, 2))
+    
+    

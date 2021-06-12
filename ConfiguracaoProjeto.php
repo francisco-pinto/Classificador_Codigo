@@ -277,7 +277,7 @@
             var elementInput = document.createElement("input");
             //Assign different attributes to the element. 
             elementInput.type = text;
-            elementInput.value = " ";
+            elementInput.value = "";
             elementInput.name = name; 
 
             inputDiv.appendChild(elementInput);
@@ -305,7 +305,7 @@
                 var elementInput = document.createElement("input");
                 //Assign different attributes to the element. 
                 elementInput.type = text;
-                elementInput.value = " ";
+                elementInput.value = "";
                 elementInput.name = name; 
 
                 inputDiv.appendChild(elementInput);
@@ -323,7 +323,7 @@
                 var elementOutput = document.createElement("input");
                 //Assign different attributes to the element. 
                 elementOutput.type = text;
-                elementOutput.value = " ";
+                elementOutput.value = "";
                 elementOutput.name = name; 
 
                 outputDiv.appendChild(elementOutput);
