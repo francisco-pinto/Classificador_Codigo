@@ -67,9 +67,14 @@ while True:
     
     #Get Casos_Teste
     cur.execute("SELECT Output FROM casos_teste where ProjetoID=%s", (projectID, ))
-    Outputs = []
+    GetOutputs = []
     for row in cur.fetchall():
-        Outputs.extend(row)
+        GetOutputs.extend(row)
+    
+    #Bug thath give " " in the begining of the array in the database
+    Outputs = []
+    Outputs = [i.strip(' ') for i in GetOutputs]
+    
     
     #print("\n\nOutputs: ", Outputs)
         
@@ -105,7 +110,7 @@ while True:
         ExtractedFiles.extend(filenames)
         break
     
-    print("\n\n", ExtractedFiles)
+    "print("\n\n", ExtractedFiles)
     
         # #Execute the file
     fileToExecute = ExtractedFilesURL + "/" + ExtractedFiles[0];
@@ -119,7 +124,7 @@ while True:
         proc = subprocess.Popen([phpURL, fileToExecute, " " + str(row)], shell=True, stdout=subprocess.PIPE)
         output = proc.stdout.read()
         OutputsObtidos.extend(output)
-        print(output)
+        #print(output)
 
     
     #Convert from ascii to string
@@ -129,12 +134,13 @@ while True:
     #Compare the results
     numOutputsTotais = len(OutputsObtidosFinais)
     correctOutputs = 0
-    index = 0
+    index = 0   
     
     #Output = [3, 4]
+    #print("Primeiro Output:" +Outputs[0])
     for row in OutputsObtidosFinais:
-        print("\rOutput esperado" + str(Outputs[index]))
-        print("\rOutput Obtido" + str(row))
+        #print("\rOutput esperado" + str(Outputs[index]))
+        #print("\rOutput Obtido" + str(row))
         if(str(Outputs[index]) == str(row)):
             correctOutputs+=1
         
