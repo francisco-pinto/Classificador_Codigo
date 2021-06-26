@@ -44,18 +44,23 @@ filesPath = uploadURL
 
 
 
-while True: 
-    #Get file names
-    files = []
-    for (dirpath, dirnames, filenames) in os.walk(filesPath):
-        files.extend(filenames)
-        break
-        
-    print(files[0])
+
+#Get file names
+files = []
+for (dirpath, dirnames, filenames) in os.walk(filesPath):
+    files.extend(filenames)
+    break
+  
+    
+    
+for file in files: 
+
+      
+    print(file)
         
     
     #Get project ID to get the casos_Teste
-    cur.execute("SELECT ProjetoID FROM ficheiro where Nome=%s", (files[0], ))
+    cur.execute("SELECT ProjetoID FROM ficheiro where Nome=%s", (file, ))
     
     for row in cur.fetchall():
         print("Projeto ID: ", row[0])
@@ -77,22 +82,42 @@ while True:
     
     
     #print("\n\nOutputs: ", Outputs)
-        
+       
+    
+    
     cur.execute("SELECT Input FROM casos_teste where ProjetoID=%s", (projectID, ))
     Inputs = []
     for row in cur.fetchall():
         Inputs.extend(row)
     
     #print("\n\nInputs: ", Inputs)
-    db.close()
     
     
+    
+    
+    
+    #Get User ID
+    userID = []
+    cur.execute("SELECT UtilizadorID FROM ficheiro where ProjetoID=%s", (projectID, ))
+    for row in cur.fetchall():
+        userID.extend(row)
+    
+    #print("UserID: ", userID)
+    
+
+
+    
+    #Get main file 
+    main_file = []
+    cur.execute("SELECT MainFile FROM ficheiro where ProjetoID=%s", (projectID, ))
+    for row in cur.fetchall():
+        main_file.extend(row)
     
     
     
     
     #Extract the file
-    fileToExtract = filesPath + "/" + files[0]
+    fileToExtract = filesPath + "/" + file
     
     #Extract file
     try:
@@ -103,6 +128,9 @@ while True:
             os.remove(ExtractedFilesURL)
 
         
+
+    
+    
     
     #Get Extracted file names
     ExtractedFiles = []
@@ -110,37 +138,75 @@ while True:
         ExtractedFiles.extend(filenames)
         break
     
-    "print("\n\n", ExtractedFiles)
+    #print("\n\n", ExtractedFiles)
     
-        # #Execute the file
-    fileToExecute = ExtractedFilesURL + "/" + ExtractedFiles[0];
+    
+    
+    
+    
+    # #Create the file that will test
+    studentFile = ExtractedFilesURL + "/" + ExtractedFiles[0];
     phpURL = "C:\\wamp64\\bin\\php\\php7.4.9\\php.exe"
     #print("Path do ficheiro a executar: ", fileToExecute)
         
+    FinalFileName = ExtractedFiles[0].split(".");
+    fileToExecute = ExtractedFilesURL + "/" + FinalFileName[0] + "Final.php";
+  
+    #Create new File
+    fich = open(fileToExecute, "w");
+    fich.write('<?php\n')
+    fich.write('include "' + studentFile +'";\n\n') 
+    fich.write('$resultado=sum($argv[1]);\n\n')
+    fich.write('exit($resultado);\n')
+    fich.write('?>\n')
+    #inclui ficheiro do aluno
+    fich.close()
+    
+    
+    #File that is going to call the student file
+    #fileToExecute = ExtractedFilesURL + "/" + ExtractedFiles[0] + "Final";
+    
+    
+    
+    
     #Input = [1, 2]
     #Get the results
+    #("Numero de inputs: " + str(len(Inputs)))
+    i = 0
     OutputsObtidos = []
     for row in Inputs:
+        print("Input: " + str(row))
         proc = subprocess.Popen([phpURL, fileToExecute, " " + str(row)], shell=True, stdout=subprocess.PIPE)
         output = proc.stdout.read()
         OutputsObtidos.extend(output)
-        #print(output)
+        #print("Output: " + str(OutputsObtidos[i]))
+        #i+=1
 
-    
+#Valores estão a ficar duplicados. Para evitar isso
+    # OutputsObtidosFinais = []
+    # i = 0
+    # for row in OutputsObtidos:
+    #         if(i % 2 == 0)
+    #             OutputsObtidosFinais.extend(row)
+    #         i++
+
+    print("acabou os outputs")
+    print(OutputsObtidos)    
+
     #Convert from ascii to string
     OutputsObtidosFinais = ''.join(chr(i) for i in OutputsObtidos)
-    #print((OutputsObtidosFinais[0]))
+    print((OutputsObtidosFinais[0]))
     
     #Compare the results
-    numOutputsTotais = len(OutputsObtidosFinais)
+    numOutputsTotais = len(OutputsObtidos)
     correctOutputs = 0
     index = 0   
     
     #Output = [3, 4]
-    #print("Primeiro Output:" +Outputs[0])
+    print("Número de outputs obtidos finais: " + str(OutputsObtidosFinais))
     for row in OutputsObtidosFinais:
-        #print("\rOutput esperado" + str(Outputs[index]))
-        #print("\rOutput Obtido" + str(row))
+        print("\rOutput esperado" + str(Outputs[index]))
+        print("\rOutput Obtido" + str(row))
         if(str(Outputs[index]) == str(row)):
             correctOutputs+=1
         
@@ -154,10 +220,36 @@ while True:
     print("A sua nota é: " + str(finalGrade))
         
     
+    #Save values in Database
+    try:
+        #cur = db.cursor()
     
-   
-    #Execute php file
+        sql = "INSERT INTO nota (Classificacao, UtilizadorID) VALUES (%s , %s)"
+        
+        
+        #Erro na inserção dos valores. val dá erro
+        val = (finalGrade, userID[0])
+        cur.execute(sql, val)
+        
+        db.commit()
+            
+        print("Nota inserida com sucesso")
+    except:
+        print("Erro ao inserir na BD")
+    
+    
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    print("___________________")
+    
+    
 
     
-    
-    
+#Close DB
+db.close()
