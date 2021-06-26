@@ -6,6 +6,7 @@ Created on Thu Jun  3 14:44:44 2021
 """
 
 import MySQLdb
+import time
 import patoolib
 import os
 from ctypes import *
@@ -13,7 +14,7 @@ import subprocess
 
 uploadURL = "C:/wamp64/www/Projeto/Uploads"
 ExtractedFilesURL = "C:/wamp64/www/Projeto/Projeto_Python/Extracted_Files"
-
+fileToExecute = ExtractedFilesURL + "/" + "FicheiroCorretor.php";
 
 servername = "127.0.0.1"
 databaseName = "Classificador_Codigo"
@@ -52,8 +53,11 @@ for (dirpath, dirnames, filenames) in os.walk(filesPath):
     break
   
     
-    
+fileIndex = 0
+
 for file in files: 
+
+    start_time = time.time()    
 
       
     print(file)
@@ -104,9 +108,9 @@ for file in files:
     
     #print("UserID: ", userID)
     
-
-
     
+    
+    #This variable is not in use for now
     #Get main file 
     main_file = []
     cur.execute("SELECT MainFile FROM ficheiro where ProjetoID=%s", (projectID, ))
@@ -127,11 +131,8 @@ for file in files:
         if os.path.exists(ExtractedFilesURL):
             os.remove(ExtractedFilesURL)
 
-        
 
-    
-    
-    
+
     #Get Extracted file names
     ExtractedFiles = []
     for (dirpath, dirnames, filenames) in os.walk(ExtractedFilesURL):
@@ -145,14 +146,16 @@ for file in files:
     
     
     # #Create the file that will test
-    studentFile = ExtractedFilesURL + "/" + ExtractedFiles[0];
+    studentFile = ExtractedFilesURL + "/" + ExtractedFiles[fileIndex]
     phpURL = "C:\\wamp64\\bin\\php\\php7.4.9\\php.exe"
     #print("Path do ficheiro a executar: ", fileToExecute)
         
-    FinalFileName = ExtractedFiles[0].split(".");
-    fileToExecute = ExtractedFilesURL + "/" + FinalFileName[0] + "Final.php";
+    FinalFileName = ExtractedFiles[fileIndex].split(".");
+
   
     #Create new File
+    print("\n\n\n\n\n", str(studentFile))
+    
     fich = open(fileToExecute, "w");
     fich.write('<?php\n')
     fich.write('include "' + studentFile +'";\n\n') 
@@ -190,7 +193,7 @@ for file in files:
     #             OutputsObtidosFinais.extend(row)
     #         i++
 
-    print("acabou os outputs")
+    print("Outputs obtidos:")
     print(OutputsObtidos)    
 
     #Convert from ascii to string
@@ -204,9 +207,11 @@ for file in files:
     
     #Output = [3, 4]
     print("Número de outputs obtidos finais: " + str(OutputsObtidosFinais))
+    
+    
     for row in OutputsObtidosFinais:
-        print("\rOutput esperado" + str(Outputs[index]))
-        print("\rOutput Obtido" + str(row))
+        print("\rOutput esperado: " + str(Outputs[index]))
+        print("\rOutput Obtido: " + str(row))
         if(str(Outputs[index]) == str(row)):
             correctOutputs+=1
         
@@ -250,6 +255,11 @@ for file in files:
     
     
 
+
+
+    print("--- %s seconds ---\n\n\n" % (time.time() - start_time))
+
+    fileIndex = fileIndex+1
     
 #Close DB
 db.close()
