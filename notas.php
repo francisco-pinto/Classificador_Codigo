@@ -41,7 +41,7 @@
     </div>
 
     <?php
-    $query = $db->query('SELECT Nome, nota1.Classificacao FROM Utilizador m JOIN Nota nota1 ON m.NotaID = nota1.Id'); //pega
+    $query = $db->query('SELECT Classificacao, utilizador.Nome FROM Nota nota JOIN Utilizador utilizador ON nota.UtilizadorID = utilizador.Id'); //pega
     ?>
 
     <div class="container">
