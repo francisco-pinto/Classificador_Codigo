@@ -301,9 +301,6 @@
 
                     if(!empty($_POST['Begin_Date']) && $Data_Inicio > date("Y-m-d H:i:s")){
                         if(!empty($_POST['End_Date']) && $Data_Fim > $Data_Inicio){
-                        
-                            echo "Início da colocação do projeto";
-
                             
                             $user_id =  $_SESSION['user_Id'];  
                             $languageID = $_POST['languageID'];
@@ -359,7 +356,6 @@
 
                             
                             // use exec() because no results are returned
-                            echo "<br><br><br>Base de Dados atualizada";
                             die();
                         
                         }else{
