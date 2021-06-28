@@ -5,7 +5,7 @@
    //Verificação de professor ou aluno
     if (isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2) 
     {
-        echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
+        // echo "Welcome to the member's area, " . $_SESSION['user_Username'] . "!";
     }else 
     {
         header("Location: login.php");
@@ -22,7 +22,7 @@
         $db = new PDO("mysql:host=$servername;dbname=Classificador_Codigo", $username, $password);
         // set the PDO error mode to exception
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
+            // echo "Connected successfully";
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
@@ -65,6 +65,9 @@
             <a class="active funcionalidade"  href="index.php">Home</a>
         </div>
 
+
+        <div class="container">
+
         <div id="InformacoesProjeto">
             <h3>Insira os critérios de avaliação</h3>
             <?php
@@ -87,8 +90,62 @@
                             
                         echo "<form action='' method='post' enctype='multipart/form-data' onsubmit='redirectEditarProjeto()'>
                         <label for='name'>Nome do Projeto:</label>
-                        <input type='text' id='text' name='name' value='$NomeProjeto'><br><br><br><br>";
+                        <input class = 'inputfile' type='text' id='text' name='name' value='$NomeProjeto'>";
                         
+
+
+
+                        /*Escolha da linguagem de programação*/
+
+                        echo"<br><br><label for='Linguagens'>Escolher a linguagem:</label><br>";
+
+                        /* Ir buscar linguagem escolhida */
+                        $query = $db->query(" SELECT LinguagemID FROM Projeto WHERE Id='$projetoID' ");
+                        $LinguagemEscolhidaID = $query->fetch();
+
+                        $query = $db->query(" SELECT Linguagem FROM linguagem WHERE Id='$LinguagemEscolhidaID[0]' ");
+                        $LinguagemEscolhida = $query->fetch();
+
+                        $sql = "SELECT * FROM Linguagem";
+
+                        $q = $db->prepare($sql);
+                        $q->execute();
+                        $q->setFetchMode(PDO::FETCH_ASSOC);
+        
+                        while ($linguagens = $q->fetch()) {
+
+                            if($linguagens['Linguagem'] == $LinguagemEscolhida[0]){
+                                echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" checked value="' . $linguagens['Id'] . '">';
+                            }else{
+                                echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" value="' . $linguagens['Id'] . '">';
+                            }
+
+                            echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
+                        }
+
+
+
+
+                        /* Data de início e data de fim do projeto */
+                        $queryDataInicio = $db->query(" SELECT Data_Projeto FROM Projeto WHERE Id='$projetoID' ");
+                        $DataInicio = $queryDataInicio->fetch();
+
+                        $Data_Inicial = date('d-m-Y', strtotime($DataInicio[0]));
+                        
+
+                        $queryDataInicio = $db->query(" SELECT Data_Limite FROM Projeto WHERE Id='$projetoID' ");
+                        $DataFim = $queryDataInicio->fetch();
+
+                        $Data_Final = date('d-m-Y', strtotime($DataFim[0]));
+
+
+                        echo "<p>Data de início de Projeto: <input class = 'inputfile' type='text' id='datepicker' name='Begin_Date' value='$Data_Inicial'></p>
+                            <p>Data de Fim de Projeto: <input class = 'inputfile' type='text' id='datepicker2' name='End_Date' value='$Data_Final'></p>
+                
+                            <br>
+                            <br> ";
+
+
 
 
                         /* Inputs */
@@ -115,8 +172,8 @@
 
                         echo "<div class='NumCasosTeste'>
                             <label for='CasosTeste'>Números de Casos Teste (Min: 1 | Máx: 8) : </label>
-                            <input type='text' id='textCasosTeste' name='CasosTesteNum' value='$numCasosTeste'><br><br>
-                            <input type='button' value='Inserir' id='textCasosTeste_Button' name='submit_Casos'>
+                            <input class = 'inputfile' type='text' id='textCasosTeste' name='CasosTesteNum' value='$numCasosTeste'><br><br>
+                            <input class = 'button' type='button' value='Inserir' id='textCasosTeste_Button' name='submit_Casos'>
                         </div>";
                         
 
@@ -134,7 +191,7 @@
                         
                         echo "</div>
                         <h3>Outputs</h3>
-                        <br>
+                        
                             <div id='OutputDiv'>";
                             
                         $indiceNome = 0;
@@ -165,58 +222,10 @@
                         //Funcoes não permitidas
                             //Num Funcoes
 
-                        /*Escolha da linguagem de programação*/
-
-                        echo"<br><br><br><label for='Linguagens'>Escolher a linguagem:</label><br>";
+                        
         
-                        /* Ir buscar linguagem escolhida */
-                        $query = $db->query(" SELECT LinguagemID FROM Projeto WHERE Id='$projetoID' ");
-                        $LinguagemEscolhidaID = $query->fetch();
-
-                        $query = $db->query(" SELECT Linguagem FROM linguagem WHERE Id='$LinguagemEscolhidaID[0]' ");
-                        $LinguagemEscolhida = $query->fetch();
-
-                        $sql = "SELECT * FROM Linguagem";
-
-                        $q = $db->prepare($sql);
-                        $q->execute();
-                        $q->setFetchMode(PDO::FETCH_ASSOC);
-        
-                        while ($linguagens = $q->fetch()) {
-
-                            if($linguagens['Linguagem'] == $LinguagemEscolhida[0]){
-                                echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" checked value="' . $linguagens['Id'] . '">';
-                            }else{
-                                echo '<input type="radio" id="' . $linguagens['Id'] . '" name="languageID" value="' . $linguagens['Id'] . '">';
-                            }
-
-                            echo '<label for="' . $linguagens['Id'] . '">' . $linguagens['Linguagem'] . '</label><br>';
-                        }
                         
-                        echo "<br><br><br><br>";
-            
-            
-                        /* Data de início e data de fim do projeto */
-                        $queryDataInicio = $db->query(" SELECT Data_Projeto FROM Projeto WHERE Id='$projetoID' ");
-                        $DataInicio = $queryDataInicio->fetch();
-
-                        $Data_Inicial = date('d-m-Y', strtotime($DataInicio[0]));
                         
-
-                        $queryDataInicio = $db->query(" SELECT Data_Limite FROM Projeto WHERE Id='$projetoID' ");
-                        $DataFim = $queryDataInicio->fetch();
-
-                        $Data_Final = date('d-m-Y', strtotime($DataFim[0]));
-
-
-                        echo "<p>Data de início de Projeto: <input type='text' id='datepicker' name='Begin_Date' value='$Data_Inicial'></p>
-                            <br><br>
-                            <p>Data de Fim de Projeto: <input type='text' id='datepicker2' name='End_Date' value='$Data_Final'></p>
-                
-                            <br>
-                            <br> ";
-                        
-
 
                         /* Inputs */
                         $query = $db->query(" SELECT Funcao FROM funcoes_nao_permitidas where ProjetoID='$projetoID' ");
@@ -235,10 +244,10 @@
 
 
                         /* Funções que são proibídas no projeto */
-                        echo "<div class='FuncoesProibidasClass'>
+                        echo "<br><br><br><br><div class='FuncoesProibidasClass'>
                             <label>Nomes das funções proibidas a utilizar: </label>
-                            <input type='text' id='TextFuncoesProibidas' name='FuncoesProibidas' value='$numFuncoesProibidas'><br><br>
-                            <input type='button' value='Inserir' id='FuncoesProibidas_Button' name='submit_FuncoesProibidas'>
+                            <input class = 'inputfile' type='text' id='TextFuncoesProibidas' name='FuncoesProibidas' value='$numFuncoesProibidas'><br><br>
+                            <input class = 'button' type='button' value='Inserir' id='FuncoesProibidas_Button' name='submit_FuncoesProibidas'>
                         </div>";
             
                         echo "<!-- Funções proibídas -->
@@ -257,7 +266,7 @@
             
                         echo "<br>
                         <br>    
-                        <input type='submit' value='Submeter' name='submit_Total'>
+                        <input class = 'button' type='submit' value='Submeter' name='submit_Total'>
                     </form>";
                     }else{
                         echo "Projeto ID desconhecido";
@@ -270,6 +279,7 @@
 
                     
             ?>
+        </div>
         </div>
    </body>
 </html>

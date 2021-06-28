@@ -67,7 +67,7 @@ for file in files:
     cur.execute("SELECT ProjetoID FROM ficheiro where Nome=%s", (file, ))
     
     for row in cur.fetchall():
-        print("Projeto ID: ", row[0])
+        # print("Projeto ID: ", row[0])
         projectID = row[0]
     
     
@@ -154,7 +154,7 @@ for file in files:
 
   
     #Create new File
-    print("\n\n\n\n\n", str(studentFile))
+    # print("\n\n\n\n\n", str(studentFile))
     
     fich = open(fileToExecute, "w");
     fich.write('<?php\n')
@@ -178,7 +178,7 @@ for file in files:
     i = 0
     OutputsObtidos = []
     for row in Inputs:
-        print("Input: " + str(row))
+        # print("Input: " + str(row))
         proc = subprocess.Popen([phpURL, fileToExecute, " " + str(row)], shell=True, stdout=subprocess.PIPE)
         output = proc.stdout.read()
         OutputsObtidos.extend(output)
@@ -193,12 +193,12 @@ for file in files:
     #             OutputsObtidosFinais.extend(row)
     #         i++
 
-    print("Outputs obtidos:")
-    print(OutputsObtidos)    
+    # print("Outputs obtidos:")
+    # print(OutputsObtidos)    
 
     #Convert from ascii to string
     OutputsObtidosFinais = ''.join(chr(i) for i in OutputsObtidos)
-    print((OutputsObtidosFinais[0]))
+    # print((OutputsObtidosFinais[0]))
     
     #Compare the results
     numOutputsTotais = len(OutputsObtidos)
@@ -206,12 +206,12 @@ for file in files:
     index = 0   
     
     #Output = [3, 4]
-    print("Número de outputs obtidos finais: " + str(OutputsObtidosFinais))
+    # print("Número de outputs obtidos finais: " + str(OutputsObtidosFinais))
     
     
     for row in OutputsObtidosFinais:
-        print("\rOutput esperado: " + str(Outputs[index]))
-        print("\rOutput Obtido: " + str(row))
+        # print("\rOutput esperado: " + str(Outputs[index]))
+        # print("\rOutput Obtido: " + str(row))
         if(str(Outputs[index]) == str(row)):
             correctOutputs+=1
         
@@ -244,14 +244,14 @@ for file in files:
     
     
     print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
-    print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
+    # print("___________________")
     
     
 
