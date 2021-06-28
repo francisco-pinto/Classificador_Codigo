@@ -101,7 +101,6 @@ if(isset($_POST['submit'])){
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         //$allowedTypes = array('application/zip', 'application/x-rar-compressed');
         $fileType = $ext;
-        echo "Inicio do upload</br>";
         //echo $language;
         
         if ($ext!="")
@@ -155,7 +154,6 @@ if(isset($_POST['submit'])){
 
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "<br><br><br>Base de Dados atualizada";
             die();
         
             $db = null;

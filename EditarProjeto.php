@@ -66,7 +66,7 @@
         <h2>Editar Projetos</h2>  
         
         <div id="EscolhaProjeto">
-            <form action="/Projeto/ConfiguracaoProjeto.php" method="post" enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data">
             <select id="' . $projeto['Id'] . '" name="projetoID">
             <option> Selecione um projeto </option>
                 <?php
@@ -83,10 +83,23 @@
                 ?>
             </select>
             <br><br>
-            <input class = "button" type="submit" value="Editar Projeto" name="submit">
+            <input class = "button" type="submit" value="Editar Projeto" name="projeto">
             </form>
+
+
         </div>
     </div>
    </body>
 </html>
 
+<?php
+    if(isset($_POST['projeto'])){
+        if(isset($_POST['projetoID'])) {
+            $_SESSION['projeto'] = $_POST['projetoID'];
+            header("Location: configuracaoprojeto.php");
+
+        } else {
+            echo 'Please select the value.';
+        }
+    }
+?>

@@ -26,6 +26,15 @@
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
+
+    if(array_key_exists('button_logout', $_POST)) {
+        button1();
+    }
+    function button1() {
+        session_destroy();
+        header("Location: login.php");
+        die();
+    }
 ?>
 
          
@@ -44,23 +53,31 @@
 	
    <body>
 
+    <div class="topnav">
+            <a class="logo" href="index.php"><img src="css\Images\logoutad.png" alt = "logoutad"></a>
 
-   <div id="InformacoesProjeto">
-        <h3>Insira os critérios de avaliação</h3>
+            <a class="logout funcionalidade" ><form method="post">
+            <button class = "button" type = "logout" name = "button_logout">Logout</button>
+            </form></a>
+
+            <a class="funcionalidade" href="projeto.php">Novo Projeto</a>
+        
+            <a class="active funcionalidade"  href="index.php">Home</a>
+        </div>
+
+        <div id="InformacoesProjeto">
+            <h3>Insira os critérios de avaliação</h3>
             <?php
-            
+
                 if(!empty($_POST['projeto'])){
                     $_SESSION['projeto'] = $_POST['projeto'];
                 }
                 
 
-                if(isset($_POST['submit_Projeto']) || isset($_POST['submit_Total'])){
+                if(!empty($_SESSION['projeto']) || isset($_POST['submit_Total'])){
                     if(!empty($_SESSION['projeto'])) {
-                        
+
                         $projetoID = $_SESSION['projeto'];
-
-
-                        echo "$projetoID";
 
                         /* Nome */
                         $query = $db->query(" SELECT Nome FROM projeto where Id='$projetoID' ");
@@ -379,9 +396,7 @@
 
                     if(!empty($_POST['Begin_Date']) && $Data_Inicio > date("Y-m-d H:i:s")){
                         if(!empty($_POST['End_Date']) && $Data_Fim > $Data_Inicio){
-                        
-                            echo "Início da colocação do projeto";
-
+                    
                             
                             $user_id =  $_SESSION['user_Id'];  
                             $languageID = $_POST['languageID'];
@@ -431,7 +446,6 @@
                             unset($_SESSION['projeto']);
                             
                             // use exec() because no results are returned
-                            echo "<br><br><br>Base de Dados atualizada";
                             header("Location: EditarProjeto.php");
 
                             die();
