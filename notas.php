@@ -48,8 +48,8 @@
     <table>
 			<thead>
 				<tr>
-					<th width= "15%">Utilizador</th>
-					<th width= "5%">Classificação</th>
+					<th width= "2%">User</th>
+					<th width= "1%">Grade</th>
 				</tr>
 			</thead>
 			<tbody>

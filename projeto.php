@@ -29,7 +29,7 @@
 <html lang = "pt">
    
    <head>
-      <title>Criação do projeto</title>
+      <title>Create Project</title>
       <link rel="stylesheet" href="css/style.css">      
 
 
@@ -56,25 +56,25 @@
         <button class = "button" type = "logout" name = "button_logout">Logout</button>
         </form></a>
 
-        <a class="funcionalidade" href="EditarProjeto.php">Editar Projeto</a>
+        <a class="funcionalidade" href="EditarProjeto.php">Edit Project</a>
     
         <a class="active funcionalidade"  href="index.php">Home</a>
     </div>
 
 
     <div class="container">
-        <h2>Criação de Projeto</h2>  
+        <h2>Create Project</h2>  
 
         <!-- Quantos input e output iremos ter? Fazer dinamicamente casos de teste -->
         <form action="" method="post" enctype="multipart/form-data">
-            <label for="name">Nome do Projeto:</label>
+            <label for="name">Project name:</label>
             <input class = "inputfile" type="text" name="name" id="text"><br><br><br>
             <!-- <input type="text" id="text" name="name"> -->
 
 
             <!-- Escolha da linguagem de programação -->
             <select id="' . $linguagens['Id'] . '" name="languageID">
-            <option> Linguagem do projeto </option><br>
+            <option> Project language </option><br>
             <!-- <label for="Linguagens">Escolher a linguagem:</label><br> -->
             <?php
                 $sql = "SELECT * FROM Linguagem";
@@ -98,18 +98,18 @@
 
 
 <!-- Data de início e data de fim do projeto -->
-<p>Data de início de Projeto: <input class = "inputfile" type="text" id="datepicker" name="Begin_Date"></p>
-            <p>Data de Fim de Projeto: <input class = "inputfile" type="text" id="datepicker2" name="End_Date"></p>
+<p>Project start date: <input class = "inputfile" type="text" id="datepicker" name="Begin_Date"></p>
+            <p>Project end date: <input class = "inputfile" type="text" id="datepicker2" name="End_Date"></p>
 
             <br>
             <br>    
 
             <!-- Número de casos de teste que pretende -->
             <div class="NumCasosTeste">
-                <label for="CasosTeste">Números de Casos Teste (Min: 1 | Máx: 8) : </label>
+                <label for="CasosTeste">Number of test cases (Min: 1 | Max: 8): </label>
                 <input class = "inputfile" type="text" name="CasosTesteNum" id="textCasosTeste"><br><br>
                 <!-- <input type="text" id="textCasosTeste" name="CasosTesteNum"> -->
-                <input class = "button" type="button" value="Inserir" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
+                <input class = "button" type="button" value="Insert" id="textCasosTeste_Button" name="submit_Casos" onclick="addCasosTeste()">
             </div>
 
             <!-- Casos Teste -->
@@ -157,14 +157,14 @@
 
             <!-- Funções que são proibídas no projeto -->
             <div class="FuncoesProibidasClass">
-                <label>Número de funções proibidas a utilizar: </label>
+                <label>Number of prohibited functions: </label>
                 <input class = "inputfile" type="text" id="TextFuncoesProibidas" name="FuncoesProibidas"><br><br>
-                <input class = "button" type="button" value="Inserir" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
+                <input class = "button" type="button" value="Insert" id="FuncoesProibidas_Button" name="submit_FuncoesProibidas" onclick="addFuncoesProibidas()">
             </div>
 
             <!-- Funções proibídas -->
             <div id="DisplayFuncoesProibidas" class="CasosTeste" >
-                <h3>Funções proibidas</h3>
+                <h3>Prohibited functions</h3>
 
                 <div id="FuncoesProibidasInput" >
                 
@@ -174,7 +174,7 @@
             <br>
             <br>    
 
-            <input class = "button" type="submit" value="Submeter" name="submit_Total">
+            <input class = "button" type="submit" value="Submit" name="submit_Total">
         </form>
 
         </div>

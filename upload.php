@@ -38,7 +38,7 @@
         <a class="logout funcionalidade" ><form method="post">
         <button class = "button" type = "logout" name = "button_logout">Logout</button>
         </form></a>
-        <a class=funcionalidade href=notas.php>Classificações</a>
+        <a class=funcionalidade href=notas.php>Grades</a>
         <a class="active funcionalidade"  href="index.php">Home</a>
     </div>
 
@@ -46,7 +46,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             <br>
             <select id="' . $projeto['Id'] . '" name="projetoID">
-            <option> Selecione um projeto </option>
+            <option> Select the project </option>
             <?php
                 $sql = "SELECT * FROM Projeto";
 
@@ -69,16 +69,16 @@
             <br>     
 
 
-            Submeter um ficheiro:
+            Please submit the file:
             <br>
             <input class = "inputfile" type="file" name="fileToUpload" id="fileToUpload">
 
             <br><br>
-            Nome do ficheiro Principal:
+            Main file name:
             <br>
             <input class = "inputfile" type="text" name="Filename" id="Filename">
             <br>
-            <input class = "button" type="submit" value="Submeter Ficheiro" name="submit">
+            <input class = "button" type="submit" value="Submit File" name="submit">
         </form>
         </div>
     </body>

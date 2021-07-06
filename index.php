@@ -19,7 +19,7 @@
 
         if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 1)
         {
-            echo "<a class='funcionalidade' href='notas.php'>Classificações</a>";
+            echo "<a class='funcionalidade' href='notas.php'>Grades</a>";
             echo "<a class='funcionalidade' href='upload.php'>Upload</a>";
         }else if(isset($_SESSION['user_Username']) && isset($_SESSION['user_Name']) && $_SESSION['usertype_Id'] == 2)
         {
