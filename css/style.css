@@ -1,0 +1,168 @@
+:root{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    background-image: url('Images/background-azul-claro.jpg');
+}
+
+body{
+    margin: 0;
+}
+
+.topnav {
+    width: 100%;
+    height: 60;
+    overflow: hidden;
+    background-color: #ffffff;
+  }
+  
+  img{
+    margin-top: 15;
+    width: 100;
+    height: 33.1;
+  }
+
+  .funcionalidade {
+    position: relative;
+    margin-right: 10;
+    margin-top: 0;
+    float: right;
+    color: #000000;
+    text-align: center;
+    padding: 5px 15px;
+    text-decoration: none;
+    font-size: 17px;
+ 
+    top: 50%;   
+    -ms-transform: translateY(-50%);   
+    transform: translateY(-50%);
+  }
+
+  .topnav a:hover {
+    text-shadow: 0px 0px 1px #2a4b7c;
+  }
+  
+  .topnav a.active {
+    text-shadow: 0px 0px 1px #1c437e;
+  }
+  .topnav a.logo {
+    float: left;
+    margin-left: 50px;
+  }
+
+.form-signin {
+    max-width: max-content;
+    margin: 0 auto;
+    padding: 15px;
+    text-shadow: 0 0 5px #ffffff;
+    color: #ff0000;
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+    font-weight: normal;
+}
+
+.form-signin .form-control {
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 25px;
+    outline: none;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input{
+    margin-bottom: 5px;
+    border-color:#2a4b7c;
+}
+
+.form-signin button[type="login"]
+{
+    margin-top: 5px;
+    margin-left: 70px;
+}
+
+h2{
+  margin-top: 10;
+  text-shadow: 0 0 3px #000000, 0 0 5px #ffffff;
+  text-align:center;
+  color: #ffffff;
+}
+
+.button
+{
+    display:inline-block;
+    background-color: #2a4b7c;
+    color: white;
+    padding: 10px 25px;
+    font-size: 18px;
+    border: 1px solid black;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+select {
+    position: absolute;
+    border-color: black;
+    outline: none;
+    padding: 10px 25px;
+    text-align:justify;
+    box-sizing: border-box;
+    overflow-y: auto;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.inputfile{
+    border-radius: 25px;
+    border: 1px solid black;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+input[type="text"]
+{
+  outline: none;
+  cursor:text;
+}
+
+.container
+{
+  margin: 20;
+}
+
+.container table
+{
+  margin: auto;
+  width: 20%;
+  border-collapse: collapse;
+}
+
+.container table td, .container table th
+{
+  border: 1px solid black;
+  padding: 8px;
+}
+
+.container table tr{background-color: #ffffff;}
+.container table tr:nth-child(even){background-color: #e0e0e0;}
+
+.container table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2a4b7c;
+  color: white;
+}
+
+#DisplayCasosTeste table{
+  margin-left: 5px;
+  width: 50%;
+  border-collapse: collapse;
+}
